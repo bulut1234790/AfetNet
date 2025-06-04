@@ -20,29 +20,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final passwordController = TextEditingController();
 
   Future<void> registerUser() async {
-    final url = Uri.parse("http://10.0.2.2:8000/api/register");
+  final url = Uri.parse("http://10.0.2.2/afetnet/register.php");
 
-    final response = await http.post(
-      url,
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode({
-        "ad": adController.text,
-        "soyad": soyadController.text,
-        "sehir": sehirController.text,
-        "telefon": telefonController.text,
-        "email": emailController.text,
-        "kullanici_adi": usernameController.text,
-        "sifre": passwordController.text,
-      }),
-    );
+  final response = await http.post(
+    url,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: {
+      "ad": adController.text,
+      "soyad": soyadController.text,
+      "sehir": sehirController.text,
+      "numara": telefonController.text,
+      "e_posta": emailController.text,
+      "kullanici_adi": usernameController.text,
+      "sifre": passwordController.text,
+    },
+  );
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Kayıt başarılı!")));
-
+  if (response.statusCode == 200) {
+    if (response.body.contains("success")) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Kayıt başarılı!")),
+      );
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => SignInScreen()),
@@ -52,7 +52,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
         SnackBar(content: Text("Kayıt başarısız: ${response.body}")),
       );
     }
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Sunucu hatası: ${response.statusCode}")),
+    );
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +90,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     height: 150,
                     fit: BoxFit.contain,
                   ),
-
                   SizedBox(
                     height: 50,
                     width: 320,
@@ -99,12 +103,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           borderSide: BorderSide(color: Colors.redAccent),
                         ),
                         filled: true,
-
                         fillColor: const Color.fromARGB(255, 255, 250, 240),
                         prefixIcon: Icon(Icons.account_circle_rounded),
                         labelText: 'Ad',
                         labelStyle: TextStyle(color: Colors.black87),
-                        hintText: 'Lütfen  adınızı girin',
+                        hintText: 'Lütfen adınızı girin',
                         border: OutlineInputBorder(),
                       ),
                     ),
@@ -250,7 +253,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: (registerUser),
+                    onPressed: registerUser, // registerUser fonksiyonunu direkt çağırın
                     child: Text(
                       "Kayıt Ol",
                       style: TextStyle(color: Colors.brown),
