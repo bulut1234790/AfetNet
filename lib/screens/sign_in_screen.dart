@@ -1,4 +1,4 @@
-import 'package:afetnet/screens/register_screen.dart';
+import 'package:afetnet/screens/register_screen1.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -125,7 +125,9 @@ class _SignInScreenState extends State<SignInScreen> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MyWidget()),
+                          MaterialPageRoute(
+                            builder: (context) => RegisterScreen(),
+                          ),
                         );
                       },
                       child: Text(

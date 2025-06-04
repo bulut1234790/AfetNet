@@ -1,8 +1,58 @@
 import 'package:afetnet/screens/sign_in_screen.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
-class MyWidget extends StatelessWidget {
-  const MyWidget({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  final adController = TextEditingController();
+  final soyadController = TextEditingController();
+  final sehirController = TextEditingController();
+  final telefonController = TextEditingController();
+  final emailController = TextEditingController();
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  Future<void> registerUser() async {
+    final url = Uri.parse("http://10.0.2.2:8000/api/register");
+
+    final response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        "ad": adController.text,
+        "soyad": soyadController.text,
+        "sehir": sehirController.text,
+        "telefon": telefonController.text,
+        "email": emailController.text,
+        "kullanici_adi": usernameController.text,
+        "sifre": passwordController.text,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Kayıt başarılı!")));
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => SignInScreen()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Kayıt başarısız: ${response.body}")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +90,7 @@ class MyWidget extends StatelessWidget {
                     height: 50,
                     width: 320,
                     child: TextField(
+                      controller: adController,
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.green),
@@ -63,6 +114,7 @@ class MyWidget extends StatelessWidget {
                     height: 50,
                     width: 320,
                     child: TextField(
+                      controller: soyadController,
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.green),
@@ -85,6 +137,7 @@ class MyWidget extends StatelessWidget {
                     height: 50,
                     width: 320,
                     child: TextField(
+                      controller: sehirController,
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.green),
@@ -107,6 +160,7 @@ class MyWidget extends StatelessWidget {
                     height: 50,
                     width: 320,
                     child: TextField(
+                      controller: telefonController,
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.green),
@@ -129,6 +183,7 @@ class MyWidget extends StatelessWidget {
                     height: 50,
                     width: 320,
                     child: TextField(
+                      controller: emailController,
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.green),
@@ -151,6 +206,7 @@ class MyWidget extends StatelessWidget {
                     height: 50,
                     width: 320,
                     child: TextField(
+                      controller: usernameController,
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.green),
@@ -173,6 +229,7 @@ class MyWidget extends StatelessWidget {
                     height: 50,
                     width: 320,
                     child: TextField(
+                      controller: passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
@@ -193,7 +250,7 @@ class MyWidget extends StatelessWidget {
                   ),
                   SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: (registerUser),
                     child: Text(
                       "Kayıt Ol",
                       style: TextStyle(color: Colors.brown),
