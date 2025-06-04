@@ -1,7 +1,7 @@
 import 'package:afetnet/screens/emergency_contact.dart';
 import 'package:afetnet/screens/forum_screen.dart';
 import 'package:afetnet/screens/profile_screen.dart';
-import 'package:afetnet/screens/register_screen1.dart';
+import 'package:afetnet/screens/register_screen.dart';
 import 'package:afetnet/screens/sign_in_screen.dart';
 import 'package:afetnet/screens/sondepremler.dart';
 import 'package:flutter/material.dart';

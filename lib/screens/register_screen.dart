@@ -1,6 +1,5 @@
 import 'package:afetnet/screens/sign_in_screen.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class RegisterScreen extends StatefulWidget {
@@ -20,7 +19,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final passwordController = TextEditingController();
 
   Future<void> registerUser() async {
-  final url = Uri.parse("http://10.0.2.2/afetnet/register.php");
+  final url = Uri.parse("http://localhost:8000/auth/register.php");
 
   final response = await http.post(
     url,

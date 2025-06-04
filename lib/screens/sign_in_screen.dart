@@ -1,4 +1,4 @@
-import 'package:afetnet/screens/register_screen1.dart';
+import 'package:afetnet/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
