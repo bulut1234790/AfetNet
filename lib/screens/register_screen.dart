@@ -19,44 +19,42 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final passwordController = TextEditingController();
 
   Future<void> registerUser() async {
-  final url = Uri.parse("http://localhost:8000/auth/register.php");
+    final url = Uri.parse("http://localhost/afetnet-back/auth/register.php");
 
-  final response = await http.post(
-    url,
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: {
-      "ad": adController.text,
-      "soyad": soyadController.text,
-      "sehir": sehirController.text,
-      "numara": telefonController.text,
-      "e_posta": emailController.text,
-      "kullanici_adi": usernameController.text,
-      "sifre": passwordController.text,
-    },
-  );
+    final response = await http.post(
+      url,
+      headers: {"Content-Type": "application/x-www-form-urlencoded"},
+      body: {
+        "ad": adController.text,
+        "soyad": soyadController.text,
+        "sehir": sehirController.text,
+        "numara": telefonController.text,
+        "e_posta": emailController.text,
+        "kullanici_adi": usernameController.text,
+        "sifre": passwordController.text,
+      },
+    );
 
-  if (response.statusCode == 200) {
-    if (response.body.contains("success")) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Kayıt başarılı!")),
-      );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => SignInScreen()),
-      );
+    if (response.statusCode == 200) {
+      if (response.body.contains("success")) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Kayıt başarılı!")));
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => SignInScreen()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Kayıt başarısız: ${response.body}")),
+        );
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Kayıt başarısız: ${response.body}")),
+        SnackBar(content: Text("Sunucu hatası: ${response.statusCode}")),
       );
     }
-  } else {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("Sunucu hatası: ${response.statusCode}")),
-    );
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -252,7 +250,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: registerUser, // registerUser fonksiyonunu direkt çağırın
+                    onPressed:
+                        registerUser, // registerUser fonksiyonunu direkt çağırın
                     child: Text(
                       "Kayıt Ol",
                       style: TextStyle(color: Colors.brown),
