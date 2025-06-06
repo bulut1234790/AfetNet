@@ -1,6 +1,7 @@
 import 'package:afetnet/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -10,13 +11,39 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final _kullanciadi = TextEditingController();
-
+  final _kullaniciAdi = TextEditingController();
   final _sifre = TextEditingController();
+
+  void _loginUser() async {
+    final response = await http.post(
+      Uri.parse("http://10.0.2.2/afetnet-back/auth/login.php"),
+      body: {"kullanici_adi": _kullaniciAdi.text, "sifre": _sifre.text},
+    );
+
+    if (response.body.contains("success")) {
+      _saveUserToDevice();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Giriş başarılı!")),
+      );
+      // TODO: Ana sayfaya yönlendirme
+    } else if (response.body.contains("Şifre yanlış")) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Şifre yanlış.")),
+      );
+    } else if (response.body.contains("Kullanıcı bulunamadı")) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Kullanıcı bulunamadı.")),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Hata: ${response.body}")),
+      );
+    }
+  }
 
   void _saveUserToDevice() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString("kadi", _kullanciadi.text);
+    prefs.setString("kadi", _kullaniciAdi.text);
     prefs.setString("sifre", _sifre.text);
   }
 
@@ -24,6 +51,7 @@ class _SignInScreenState extends State<SignInScreen> {
     final prefs = await SharedPreferences.getInstance();
     final String? kadi = prefs.getString("kadi");
     final String? sifre = prefs.getString("sifre");
+    // Gerekirse burada otomatik giriş yapılabilir
   }
 
   @override
@@ -40,7 +68,6 @@ class _SignInScreenState extends State<SignInScreen> {
           "AFETNET",
           style: TextStyle(
             color: Color(0xFF4E342E),
-            fontStyle: FontStyle.normal,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -59,12 +86,11 @@ class _SignInScreenState extends State<SignInScreen> {
                   height: 320,
                   fit: BoxFit.contain,
                 ),
-
                 SizedBox(
                   height: 50,
                   width: 320,
                   child: TextField(
-                    controller: _kullanciadi,
+                    controller: _kullaniciAdi,
                     decoration: InputDecoration(
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.green),
@@ -109,7 +135,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    _saveUserToDevice();
+                    _loginUser();
                   },
                   child: Text(
                     "Giriş yap",
@@ -126,8 +152,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => RegisterScreen(),
-                          ),
+                              builder: (context) => RegisterScreen()),
                         );
                       },
                       child: Text(
