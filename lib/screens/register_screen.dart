@@ -17,6 +17,91 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final emailController = TextEditingController();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+  final List<String> sehirler = [
+    "Adana",
+    "Adıyaman",
+    "Afyonkarahisar",
+    "Ağrı",
+    "Amasya",
+    "Ankara",
+    "Antalya",
+    "Artvin",
+    "Aydın",
+    "Balıkesir",
+    "Bilecik",
+    "Bingöl",
+    "Bitlis",
+    "Bolu",
+    "Burdur",
+    "Bursa",
+    "Çanakkale",
+    "Çankırı",
+    "Çorum",
+    "Denizli",
+    "Diyarbakır",
+    "Edirne",
+    "Elazığ",
+    "Erzincan",
+    "Erzurum",
+    "Eskişehir",
+    "Gaziantep",
+    "Giresun",
+    "Gümüşhane",
+    "Hakkâri",
+    "Hatay",
+    "Isparta",
+    "Mersin",
+    "İstanbul",
+    "İzmir",
+    "Kars",
+    "Kastamonu",
+    "Kayseri",
+    "Kırklareli",
+    "Kırşehir",
+    "Kocaeli",
+    "Konya",
+    "Kütahya",
+    "Malatya",
+    "Manisa",
+    "Kahramanmaraş",
+    "Mardin",
+    "Muğla",
+    "Muş",
+    "Nevşehir",
+    "Niğde",
+    "Ordu",
+    "Rize",
+    "Sakarya",
+    "Samsun",
+    "Siirt",
+    "Sinop",
+    "Sivas",
+    "Tekirdağ",
+    "Tokat",
+    "Trabzon",
+    "Tunceli",
+    "Şanlıurfa",
+    "Uşak",
+    "Van",
+    "Yozgat",
+    "Zonguldak",
+    "Aksaray",
+    "Bayburt",
+    "Karaman",
+    "Kırıkkale",
+    "Batman",
+    "Şırnak",
+    "Bartın",
+    "Ardahan",
+    "Iğdır",
+    "Yalova",
+    "Karabük",
+    "Kilis",
+    "Osmaniye",
+    "Düzce",
+  ];
+
+  String? secilenSehir;
 
   Future<void> registerUser() async {
     final url = Uri.parse("http://localhost/afetnet-backend/auth/register.php");
@@ -136,8 +221,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   SizedBox(
                     height: 50,
                     width: 320,
-                    child: TextField(
-                      controller: sehirController,
+                    child: DropdownButtonFormField<String>(
+                      value: secilenSehir,
+                      onChanged: (value) {
+                        setState(() {
+                          secilenSehir = value!;
+                          sehirController.text =
+                              value; // TextController'ı güncelle
+                        });
+                      },
+                      items:
+                          sehirler.map((sehir) {
+                            return DropdownMenuItem<String>(
+                              value: sehir,
+                              child: Text(sehir),
+                            );
+                          }).toList(),
                       decoration: InputDecoration(
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.green),
@@ -150,11 +249,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         prefixIcon: Icon(Icons.location_city),
                         labelStyle: TextStyle(color: Colors.black87),
                         labelText: 'Yaşadığınız Şehir',
-                        hintText: 'Lütfen yaşadığınız şehri girin',
+                        hintText: 'Lütfen yaşadığınız şehri seçin',
                         border: OutlineInputBorder(),
                       ),
                     ),
                   ),
+
                   SizedBox(height: 20),
                   SizedBox(
                     height: 50,
