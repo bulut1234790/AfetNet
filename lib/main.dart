@@ -2,8 +2,12 @@ import 'package:afetnet/screens/education.dart';
 import 'package:afetnet/screens/emergency_contact.dart';
 import 'package:afetnet/screens/forum_screen.dart';
 import 'package:afetnet/screens/profile_screen.dart';
+<<<<<<< HEAD
 import 'package:afetnet/screens/profile_update.dart';
 import 'package:afetnet/screens/register_screen1.dart';
+=======
+import 'package:afetnet/screens/register_screen.dart';
+>>>>>>> 734ffcf90c4be8aa9db1e88b5367696e493cb7d6
 import 'package:afetnet/screens/sign_in_screen.dart';
 import 'package:afetnet/screens/sondepremler.dart';
 import 'package:flutter/material.dart';
