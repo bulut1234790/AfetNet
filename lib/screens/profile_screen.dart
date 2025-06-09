@@ -1,11 +1,12 @@
+import 'package:afetnet/screens/profile_update.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(AfetNetApp());
+  runApp(ProfileScreen());
 }
 
-class AfetNetApp extends StatelessWidget {
-  const AfetNetApp({super.key});
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -195,6 +196,43 @@ class AfetNetApp extends StatelessWidget {
                   ),
                 ),
               ),
+
+              // Eklenen "Bilgileri Güncelle" butonu
+              SizedBox(height: 20),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.teal[600],
+                  padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  elevation: 3,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfileUpdateScreen(),
+                    ),
+                  );
+                },
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.edit, color: Colors.white),
+                    SizedBox(width: 8),
+                    Text(
+                      "Bilgileri Güncelle",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
             ],
           ),
         ),
