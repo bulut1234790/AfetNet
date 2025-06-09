@@ -14,7 +14,7 @@ class AfetNetApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.teal,
         hintColor: Colors.amber[600],
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData( // burası CardTheme'di
           elevation: 3,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),

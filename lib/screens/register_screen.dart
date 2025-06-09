@@ -19,7 +19,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final passwordController = TextEditingController();
 
   Future<void> registerUser() async {
-    final url = Uri.parse("http://localhost/afetnet-back/auth/register.php");
+    final url = Uri.parse("http://localhost/afetnet-backend/auth/register.php");
 
     final response = await http.post(
       url,
