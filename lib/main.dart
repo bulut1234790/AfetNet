@@ -8,6 +8,7 @@ import 'package:afetnet/screens/register_screen.dart';
 import 'package:afetnet/screens/sign_in_screen.dart';
 import 'package:afetnet/screens/sondepremler.dart';
 import 'package:flutter/material.dart';
+import 'package:afetnet/screens/map_screen.dart';
 
 void main() {
   runApp(const MyApp());
