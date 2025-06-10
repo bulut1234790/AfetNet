@@ -7,12 +7,12 @@ class SettingsScreen extends StatefulWidget {
   final Function(bool) onNotificationsChanged;
 
   const SettingsScreen({
-    Key? key,
+    super.key,
     required this.isDarkMode,
     required this.notificationsEnabled,
     required this.onThemeChanged,
     required this.onNotificationsChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();

@@ -30,7 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  shared_preferences: ^2.2.2
+  shared_preferences: ^2.5.3
   keyboard_avoider: ^0.2.0
   html: ^0.15.4
   url_launcher: ^6.2.6
@@ -40,6 +40,10 @@ dependencies:
   http: ^1.4.0
   charset_converter: ^2.3.0
   intl: ^0.18.1
+  audioplayers: ^6.4.0
+  torch_light: ^1.1.0
+  flutter_compass: ^0.8.1
+  geolocator: ^14.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

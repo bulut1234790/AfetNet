@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:torch_light/torch_light.dart';
 
 class FenerSayfasi extends StatefulWidget {
-  const FenerSayfasi({Key? key}) : super(key: key);
+  const FenerSayfasi({super.key});
 
   @override
   State<FenerSayfasi> createState() => _FenerSayfasiState();

@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 
 class WeatherScreen extends StatefulWidget {
-  const WeatherScreen({Key? key}) : super(key: key);
+  const WeatherScreen({super.key});
 
   @override
   State<WeatherScreen> createState() => _WeatherScreenState();
