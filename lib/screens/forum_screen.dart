@@ -82,8 +82,18 @@ class _ForumScreenState extends State<ForumScreen> {
                         ],
                       ),
                       const SizedBox(height: 8),
+
+                    // Başlık
+
+                     Text(
+                          post.header,
+                        style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      fontSize: 16,)),
+                      
+                      const SizedBox(height: 4),
                       Text(post.content),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 4),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
