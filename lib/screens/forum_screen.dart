@@ -3,6 +3,7 @@ import '../models/forum_post.dart';
 import 'package:afetnet/services/forum_service.dart';
 import 'package:intl/intl.dart';
 
+
 class ForumScreen extends StatefulWidget {
   const ForumScreen({super.key});
 
