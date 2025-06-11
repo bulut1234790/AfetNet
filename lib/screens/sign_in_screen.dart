@@ -2,6 +2,7 @@ import 'package:afetnet/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:afetnet/screens/map_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -28,6 +29,11 @@ class _SignInScreenState extends State<SignInScreen> {
         context,
       ).showSnackBar(SnackBar(content: Text("Giriş başarılı!")));
       // TODO: Ana sayfaya yönlendirme
+      // Giriş başarılı olduktan sonra MapScreen'e yönlendirme yapıyoruz
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const MapScreen()),
+      );
     } else if (response.body.contains("Şifre yanlış")) {
       ScaffoldMessenger.of(
         context,
