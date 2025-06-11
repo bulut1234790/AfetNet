@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 class DudukSayfasi extends StatefulWidget {
-  const DudukSayfasi({Key? key}) : super(key: key);
+  const DudukSayfasi({super.key});
 
   @override
   State<DudukSayfasi> createState() => _DudukSayfasiState();

@@ -16,28 +16,30 @@ class _SignInScreenState extends State<SignInScreen> {
 
   void _loginUser() async {
     final response = await http.post(
-      Uri.parse("http://10.0.2.2/afetnet-back/auth/login.php"),
+      Uri.parse("http://localhost/afetnet-backend/auth/login.php"),
       body: {"kullanici_adi": _kullaniciAdi.text, "sifre": _sifre.text},
     );
+    print("🔁 Sunucudan gelen cevap: ${response.body}"); // BURAYA EKLE
+    if (!mounted) return;
 
     if (response.body.contains("success")) {
       _saveUserToDevice();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Giriş başarılı!")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Giriş başarılı!")));
       // TODO: Ana sayfaya yönlendirme
     } else if (response.body.contains("Şifre yanlış")) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Şifre yanlış.")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Şifre yanlış.")));
     } else if (response.body.contains("Kullanıcı bulunamadı")) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Kullanıcı bulunamadı.")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Kullanıcı bulunamadı.")));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Hata: ${response.body}")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Hata: ${response.body}")));
     }
   }
 
@@ -51,6 +53,12 @@ class _SignInScreenState extends State<SignInScreen> {
     final prefs = await SharedPreferences.getInstance();
     final String? kadi = prefs.getString("kadi");
     final String? sifre = prefs.getString("sifre");
+
+    if (kadi != null && sifre != null) {
+      _kullaniciAdi.text = kadi;
+      _sifre.text = sifre;
+      _loginUser(); // otomatik giriş
+    }
     // Gerekirse burada otomatik giriş yapılabilir
   }
 
@@ -152,7 +160,8 @@ class _SignInScreenState extends State<SignInScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => RegisterScreen()),
+                            builder: (context) => RegisterScreen(),
+                          ),
                         );
                       },
                       child: Text(
