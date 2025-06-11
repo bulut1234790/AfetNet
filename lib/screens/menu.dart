@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import "settings.dart"; // SettingsScreen dosyanın doğru yolda olduğundan emin ol
 
 class MenuSayfasi extends StatelessWidget {
-  const MenuSayfasi({Key? key}) : super(key: key);
+  const MenuSayfasi({super.key});
 
   @override
   Widget build(BuildContext context) {

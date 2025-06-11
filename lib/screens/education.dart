@@ -20,7 +20,7 @@ class EducationPage extends StatelessWidget {
     "Heyelan": "https://www.youtube.com/watch?v=link5",
   };
 
-  const EducationPage({super.key});
+  EducationPage({super.key});
 
   Future<void> _launchURL(String url) async {
     final Uri uri = Uri.parse(url);

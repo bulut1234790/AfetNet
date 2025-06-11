@@ -28,6 +28,8 @@ class AfetNetApp extends StatelessWidget {
 }
 
 class ProfileUpdateScreen extends StatefulWidget {
+  const ProfileUpdateScreen({super.key});
+
   @override
   _ProfileUpdateScreenState createState() => _ProfileUpdateScreenState();
 }
@@ -203,7 +205,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   }
 
   Widget _buildPasswordField(String label, String initialValue) {
-    bool _obscureText = true;
+    bool obscureText = true;
 
     return StatefulBuilder(
       builder: (context, setState) {
@@ -211,7 +213,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
           padding: const EdgeInsets.only(bottom: 16),
           child: TextFormField(
             initialValue: initialValue,
-            obscureText: _obscureText,
+            obscureText: obscureText,
             decoration: InputDecoration(
               labelText: label,
               labelStyle: TextStyle(color: Colors.teal[800]),
@@ -229,12 +231,12 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
               ),
               suffixIcon: IconButton(
                 icon: Icon(
-                  _obscureText ? Icons.visibility : Icons.visibility_off,
+                  obscureText ? Icons.visibility : Icons.visibility_off,
                   color: Colors.teal,
                 ),
                 onPressed: () {
                   setState(() {
-                    _obscureText = !_obscureText;
+                    obscureText = !obscureText;
                   });
                 },
               ),

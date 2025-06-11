@@ -3,7 +3,7 @@ import 'package:flutter_compass/flutter_compass.dart';
 import 'dart:math' as math; // math kütüphanesini doğru şekilde içe aktar
 
 class PusulaSayfasi extends StatefulWidget {
-  const PusulaSayfasi({Key? key}) : super(key: key);
+  const PusulaSayfasi({super.key});
 
   @override
   _PusulaSayfasiState createState() => _PusulaSayfasiState();
