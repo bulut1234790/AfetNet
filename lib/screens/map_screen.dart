@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:afetnet/screens/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
@@ -157,7 +158,7 @@ class _MapScreenState extends State<MapScreen> {
 
           // --- Konumumu Gör Butonu ---
           Positioned(
-            bottom: 90,
+            bottom: 120, // 90'dan 110'a yükselttim
             left: 0,
             right: 0,
             child: Align(
@@ -173,7 +174,6 @@ class _MapScreenState extends State<MapScreen> {
               ),
             ),
           ),
-
           // --- Acil Yardım Seçenekleri ---
           Positioned(
             bottom: 120,
@@ -244,34 +244,71 @@ class _MapScreenState extends State<MapScreen> {
             bottom: 40,
             left: 20,
             right: 20,
-            child: Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    style: buttonStyle(),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              decoration: BoxDecoration(
+                color: Colors.green.shade600,
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  IconButton(
+                    tooltip: "Menü",
+                    icon: const Icon(Icons.menu, color: Colors.white, size: 28),
                     onPressed: () {
-                      setState(() {
-                        showEmergencyOptions = !showEmergencyOptions;
-                        showToolsOptions = false; // Diğerini kapat
-                      });
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MenuSayfasi(),
+                        ),
+                      );
                     },
-                    child: const Text("ACİL YARDIM"),
                   ),
-                ),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: ElevatedButton(
-                    style: buttonStyle(),
+                  IconButton(
+                    tooltip: "Harita",
+                    icon: const Icon(Icons.map, color: Colors.white, size: 28),
                     onPressed: () {
-                      setState(() {
-                        showToolsOptions = !showToolsOptions;
-                        showEmergencyOptions = false; // Diğerini kapat
-                      });
+                      // Harita butonuna basılınca yapılacaklar
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Harita butonuna tıklandı'),
+                        ),
+                      );
                     },
-                    child: const Text("ARAÇLAR"),
                   ),
-                ),
-              ],
+                  IconButton(
+                    tooltip: "Bildirim",
+                    icon: const Icon(
+                      Icons.notifications,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                    onPressed: () {
+                      // Bildirim butonuna basılınca yapılacaklar
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Bildirim butonuna tıklandı'),
+                        ),
+                      );
+                    },
+                  ),
+                  IconButton(
+                    tooltip: "Kişi",
+                    icon: const Icon(
+                      Icons.person,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                    onPressed: () {
+                      // Kişi butonuna basılınca yapılacaklar
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Kişi butonuna tıklandı')),
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ],
