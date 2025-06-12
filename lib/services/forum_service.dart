@@ -4,7 +4,9 @@ import '../models/forum_post.dart';
 
 class ForumService {
   static Future<List<ForumPost>> fetchPosts() async {
-    final response = await http.get(Uri.parse('http://localhost/afetnet-backend/forum/forum.php'));
+    final response = await http.get(
+      Uri.parse('http://10.0.2.2/localhost/afetnet-backend/forum/forum.php'),
+    );
 
     if (response.statusCode == 200) {
       List data = jsonDecode(response.body);
