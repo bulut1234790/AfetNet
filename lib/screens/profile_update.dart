@@ -47,6 +47,91 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
     'Kullanıcı Adı': 'mustafay',
     'Şifre': '********', // Gerçek uygulamada şifre bu şekilde saklanmamalı
   };
+  final List<String> sehirler = [
+    "Adana",
+    "Adıyaman",
+    "Afyonkarahisar",
+    "Ağrı",
+    "Amasya",
+    "Ankara",
+    "Antalya",
+    "Artvin",
+    "Aydın",
+    "Balıkesir",
+    "Bilecik",
+    "Bingöl",
+    "Bitlis",
+    "Bolu",
+    "Burdur",
+    "Bursa",
+    "Çanakkale",
+    "Çankırı",
+    "Çorum",
+    "Denizli",
+    "Diyarbakır",
+    "Edirne",
+    "Elazığ",
+    "Erzincan",
+    "Erzurum",
+    "Eskişehir",
+    "Gaziantep",
+    "Giresun",
+    "Gümüşhane",
+    "Hakkâri",
+    "Hatay",
+    "Isparta",
+    "Mersin",
+    "İstanbul",
+    "İzmir",
+    "Kars",
+    "Kastamonu",
+    "Kayseri",
+    "Kırklareli",
+    "Kırşehir",
+    "Kocaeli",
+    "Konya",
+    "Kütahya",
+    "Malatya",
+    "Manisa",
+    "Kahramanmaraş",
+    "Mardin",
+    "Muğla",
+    "Muş",
+    "Nevşehir",
+    "Niğde",
+    "Ordu",
+    "Rize",
+    "Sakarya",
+    "Samsun",
+    "Siirt",
+    "Sinop",
+    "Sivas",
+    "Tekirdağ",
+    "Tokat",
+    "Trabzon",
+    "Tunceli",
+    "Şanlıurfa",
+    "Uşak",
+    "Van",
+    "Yozgat",
+    "Zonguldak",
+    "Aksaray",
+    "Bayburt",
+    "Karaman",
+    "Kırıkkale",
+    "Batman",
+    "Şırnak",
+    "Bartın",
+    "Ardahan",
+    "Iğdır",
+    "Yalova",
+    "Karabük",
+    "Kilis",
+    "Osmaniye",
+    "Düzce",
+  ];
+
+  String? secilenSehir;
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +168,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                       SizedBox(height: 20),
                       _buildTextField('Ad', userInfo['Ad']!),
                       _buildTextField('Soyad', userInfo['Soyad']!),
-                      _buildTextField(
+                      _buildSehirDropdown(
                         'Yaşadığınız Şehir',
                         userInfo['Yaşadığınız Şehir']!,
                       ),
@@ -199,6 +284,46 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         },
         onSaved: (newValue) {
           userInfo[label] = newValue!;
+        },
+      ),
+    );
+  }
+
+  Widget _buildSehirDropdown(String label, String initialValue) {
+    secilenSehir ??= initialValue;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: DropdownButtonFormField<String>(
+        value: secilenSehir,
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(color: Colors.teal[800]),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(color: Colors.teal),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(color: Colors.teal, width: 2),
+          ),
+          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        ),
+        items:
+            sehirler.map((sehir) {
+              return DropdownMenuItem<String>(value: sehir, child: Text(sehir));
+            }).toList(),
+        onChanged: (value) {
+          setState(() {
+            secilenSehir = value;
+            userInfo[label] = value!;
+          });
+        },
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Bu alan boş bırakılamaz';
+          }
+          return null;
         },
       ),
     );
