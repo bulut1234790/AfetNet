@@ -78,6 +78,7 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFFFECD9),
       appBar: AppBar(
         title: Text(
           "AFETNET",
@@ -89,9 +90,11 @@ class _SignInScreenState extends State<SignInScreen> {
         centerTitle: true,
         backgroundColor: Colors.brown.shade400,
       ),
-      body: SafeArea(
-        child: Container(
-          color: Color(0xFFFFECD9),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: SafeArea(
           child: Center(
             child: Column(
               children: [
