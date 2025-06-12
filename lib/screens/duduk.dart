@@ -21,8 +21,9 @@ class _DudukSayfasiState extends State<DudukSayfasi> {
   }
 
   void _playAlarm() async {
-    // Loop ayarını her çalmadan önce yap
-    await _audioPlayer.setReleaseMode(ReleaseMode.loop);
+    // Ses dosyasını asset'ten yükle ve çal.
+    // initState'te yapılan setReleaseMode(ReleaseMode.loop) ayarı sayesinde
+    // bu ses durdurulana kadar tekrarlayacak.
     await _audioPlayer.play(AssetSource('sound/alarm.ogg'));
   }
 
@@ -41,6 +42,11 @@ class _DudukSayfasiState extends State<DudukSayfasi> {
 
   @override
   Widget build(BuildContext context) {
+    // Butonlar için ortak bir genişlik tanımlayalım
+    // Bu değeri buton metinleri ve ikonlarına göre ayarlayabilirsiniz.
+    // Yaklaşık olarak geniş bir değer seçildi.
+    const double buttonWidth = 250.0;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Düdük"),
@@ -52,37 +58,48 @@ class _DudukSayfasiState extends State<DudukSayfasi> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Sesi Çal butonu (tasarımı korunmuştur)
-            ElevatedButton.icon(
-              onPressed: _playAlarm, // _playAlarm fonksiyonunu çağır
-              icon: const Icon(Icons.volume_up, size: 30),
-              label: const Text("Sesi Çal", style: TextStyle(fontSize: 20)),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.redAccent,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 40,
-                  vertical: 15,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+            SizedBox(
+              // Buton genişliğini sabitlemek için SizedBox eklendi
+              width: buttonWidth,
+              child: ElevatedButton.icon(
+                onPressed: _playAlarm, // _playAlarm fonksiyonunu çağır
+                icon: const Icon(Icons.volume_up, size: 30),
+                label: const Text("Sesi Çal", style: TextStyle(fontSize: 20)),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.redAccent,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 40,
+                    vertical: 15,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ),
             ),
             const SizedBox(height: 30),
             // Sesi Durdur butonu (tasarımı korunmuştur)
-            ElevatedButton.icon(
-              onPressed: _stopAlarm, // _stopAlarm fonksiyonunu çağır
-              icon: const Icon(Icons.volume_off, size: 30),
-              label: const Text("Sesi Durdur", style: TextStyle(fontSize: 20)),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueGrey,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 40,
-                  vertical: 15,
+            SizedBox(
+              // Buton genişliğini sabitlemek için SizedBox eklendi
+              width: buttonWidth,
+              child: ElevatedButton.icon(
+                onPressed: _stopAlarm, // _stopAlarm fonksiyonunu çağır
+                icon: const Icon(Icons.volume_off, size: 30),
+                label: const Text(
+                  "Sesi Durdur",
+                  style: TextStyle(fontSize: 20),
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blueGrey,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 40,
+                    vertical: 15,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ),
             ),
