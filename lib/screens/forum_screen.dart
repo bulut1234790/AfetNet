@@ -143,7 +143,7 @@ class _ForumScreenState extends State<ForumScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "AFETNET Forum",
+          "AfetNet Forum",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.brown.shade700,

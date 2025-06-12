@@ -17,7 +17,7 @@ class _DepremlerSayfasiState extends State<DepremlerSayfasi> {
     super.initState();
     futureDepremler = DepremService.fetchDepremler();
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

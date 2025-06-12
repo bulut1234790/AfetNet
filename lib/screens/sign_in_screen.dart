@@ -17,7 +17,8 @@ class _SignInScreenState extends State<SignInScreen> {
 
   void _loginUser() async {
     final response = await http.post(
-      Uri.parse("http://localhost/afetnet-backend/auth/login.php"),
+      Uri.parse("http://localhost/afetnet-backend/auth/login.php"), 
+      // Uri.parse('http://10.0.2.2/afetnet-backend/auth/login.php)
       body: {"kullanici_adi": _kullaniciAdi.text, "sifre": _sifre.text},
     );
     print("🔁 Sunucudan gelen cevap: ${response.body}"); // BURAYA EKLE
