@@ -1,5 +1,9 @@
+import "package:afetnet/screens/education.dart";
+import "package:afetnet/screens/profile_screen.dart";
+import "package:afetnet/screens/sondepremler.dart";
 import 'package:flutter/material.dart';
 import "settings.dart"; // SettingsScreen dosyanın doğru yolda olduğundan emin ol
+import "forum_screen.dart"; // ForumScreen dosyasını import etmeyi unutmayın!
 
 class MenuSayfasi extends StatelessWidget {
   const MenuSayfasi({super.key});
@@ -48,7 +52,12 @@ class MenuSayfasi extends StatelessWidget {
                     context,
                     screenWidth,
                   ),
-                  _menuButonu("menu_forum.png", "Forum", context, screenWidth),
+                  _menuButonu(
+                    "menu_forum.png",
+                    "Forum",
+                    context,
+                    screenWidth,
+                  ), // Forum butonu
                   _menuButonu(
                     "menu_person.png",
                     "Kişisel Bilgiler",
@@ -133,7 +142,6 @@ class MenuSayfasi extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 20),
       ),
       onPressed: () {
-        // "Ayarlar" butonuna basıldığında SettingsScreen'e yönlendir
         if (metin == "Ayarlar") {
           Navigator.push(
             context,
@@ -152,6 +160,42 @@ class MenuSayfasi extends StatelessWidget {
                       // Burada bildirim ayarını güncelleyecek kodu çağırabilirsin
                     },
                   ),
+            ),
+          );
+        } else if (metin == "Forum") {
+          // BURASI EKLENDİ
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder:
+                  (context) => const ForumScreen(), // ForumScreen'e yönlendirme
+            ),
+          );
+        } else if (metin == "Eğitim") {
+          // BURASI EKLENDİ
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder:
+                  (context) => EducationPage(), // ForumScreen'e yönlendirme
+            ),
+          );
+        } else if (metin == "Kişisel Bilgiler") {
+          // BURASI EKLENDİ
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder:
+                  (context) => ProfileScreen(), // ForumScreen'e yönlendirme
+            ),
+          );
+        } else if (metin == "Son Depremler") {
+          // BURASI EKLENDİ
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder:
+                  (context) => DepremlerSayfasi(), // ForumScreen'e yönlendirme
             ),
           );
         } else {

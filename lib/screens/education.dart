@@ -1,3 +1,4 @@
+import 'package:afetnet/screens/map_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -175,7 +176,10 @@ class EducationPage extends StatelessWidget {
                 ],
               ),
               onPressed: () {
-                // TODO: Ana sayfa dönüş işlemi
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MapScreen()),
+                );
               },
             ),
           ],

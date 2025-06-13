@@ -2,6 +2,7 @@ import 'package:afetnet/screens/duduk.dart';
 import 'package:afetnet/screens/education.dart';
 import 'package:afetnet/screens/emergency_contact.dart';
 import 'package:afetnet/screens/forum_screen.dart';
+import 'package:afetnet/screens/map_screen.dart';
 import 'package:afetnet/screens/profile_screen.dart';
 import 'package:afetnet/screens/profile_update.dart';
 import 'package:afetnet/screens/register_screen.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'My App',
-      initialRoute: '/duduk',
+      initialRoute: '/anasayfa',
       routes: {
         '/signin': (context) => SignInScreen(),
         '/register': (context) => RegisterScreen(),
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         '/egitim': (context) => EducationPage(),
         '/profile_update': (context) => ProfileUpdateScreen(),
         '/duduk': (context) => DudukSayfasi(),
+        '/anasayfa': (context) => MapScreen(),
       },
     );
   }
