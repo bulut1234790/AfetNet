@@ -1,3 +1,4 @@
+import 'dart:convert'; // Import this for json.decode
 import 'package:afetnet/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,15 +18,19 @@ class _SignInScreenState extends State<SignInScreen> {
 
   void _loginUser() async {
     final response = await http.post(
-      Uri.parse("http://localhost/afetnet-backend/auth/login.php"), 
+      Uri.parse("http://localhost/afetnet-backend/auth/login.php"),
       // Uri.parse('http://10.0.2.2/afetnet-backend/auth/login.php)
       body: {"kullanici_adi": _kullaniciAdi.text, "sifre": _sifre.text},
     );
+
     print("🔁 Sunucudan gelen cevap: ${response.body}"); // BURAYA EKLE
+
     if (!mounted) return;
+    final Map<String, dynamic> responseData = json.decode(response.body);
 
     if (response.body.contains("success")) {
-      _saveUserToDevice();
+      final int userId = responseData["user_id"];
+      _saveUserToDevice(userId);
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text("Giriş başarılı!")));
@@ -50,18 +55,20 @@ class _SignInScreenState extends State<SignInScreen> {
     }
   }
 
-  void _saveUserToDevice() async {
+  void _saveUserToDevice(int userId) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString("kadi", _kullaniciAdi.text);
     prefs.setString("sifre", _sifre.text);
+    prefs.setInt("user_id", userId);
   }
 
   void _checkUserFromDevice() async {
     final prefs = await SharedPreferences.getInstance();
     final String? kadi = prefs.getString("kadi");
     final String? sifre = prefs.getString("sifre");
+    final int? userId = prefs.getInt("user_id");
 
-    if (kadi != null && sifre != null) {
+    if (kadi != null && sifre != null && userId != null) {
       _kullaniciAdi.text = kadi;
       _sifre.text = sifre;
       _loginUser(); // otomatik giriş

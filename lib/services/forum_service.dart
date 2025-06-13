@@ -15,4 +15,28 @@ class ForumService {
       throw Exception("Veriler alınamadı");
     }
   }
+
+  static Future<void> addPost(String baslik, String icerik, String kategori) async {
+    final url = Uri.parse('http://localhost/afetnet-backend/forum/forum.php'); // 
+
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'kullanici_id': 1,  // Sabit değer; oturum sistemin varsa ona göre değiştir
+        'baslik': baslik,
+        'icerik': icerik,
+        'kategori': kategori,
+      }),
+    );
+
+
+  if (response.statusCode == 201) {
+    print('Gönderi başarıyla eklendi');
+  } else {
+    print('Hata: ${response.body}');
+  }
+  }
 }
+
+

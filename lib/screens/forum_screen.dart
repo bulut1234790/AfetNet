@@ -12,8 +12,12 @@ class ForumScreen extends StatefulWidget {
 
 class _ForumScreenState extends State<ForumScreen> {
   late Future<List<ForumPost>> futurePosts;
-  final TextEditingController _postController = TextEditingController();
+  final TextEditingController _headerController = TextEditingController();
   final TextEditingController _commentController = TextEditingController();
+  final TextEditingController _contentController = TextEditingController();
+
+  String? _selectedCategory;
+
   ForumPost? _selectedPost;
 
   @override
@@ -56,7 +60,7 @@ class _ForumScreenState extends State<ForumScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextField(
-                  controller: _postController,
+                  controller: _headerController,
                   decoration: InputDecoration(
                     labelText: 'Başlık',
                     border: OutlineInputBorder(
@@ -67,6 +71,7 @@ class _ForumScreenState extends State<ForumScreen> {
                 ),
                 const SizedBox(height: 10),
                 TextField(
+                  controller: _contentController,
                   decoration: InputDecoration(
                     labelText: 'İçerik',
                     border: OutlineInputBorder(
@@ -92,7 +97,11 @@ class _ForumScreenState extends State<ForumScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedCategory = value; 
+                    });
+                  },
                 ),
               ],
             ),
@@ -108,8 +117,30 @@ class _ForumScreenState extends State<ForumScreen> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                onPressed: () {
-                  // Post gönderme işlemi
+                onPressed: () async {
+                  final baslik = _headerController.text.trim();
+                  final icerik = _contentController.text.trim();
+                  final kategori = _selectedCategory;
+
+                  if (baslik.isEmpty || icerik.isEmpty || kategori == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Lütfen tüm alanları doldurun.')),
+                    );
+                    return;
+                  }
+                  try {
+                    await ForumService.addPost(baslik, icerik, kategori);
+                    Navigator.pop(context);
+                    _loadPosts();
+                    _contentController.clear();
+                    _headerController.clear();
+                  } catch (e) {
+                    print('Hata oluştu: $e');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Gönderi başarısız oldu.')),
+                    );
+                  }
+
                   Navigator.pop(context);
                   _loadPosts();
                 },
@@ -146,7 +177,7 @@ class _ForumScreenState extends State<ForumScreen> {
           "AfetNet Forum",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.brown.shade700,
+        backgroundColor: const Color.fromARGB(255, 146, 194, 154),
         centerTitle: true,
         elevation: 4,
       ),
@@ -446,7 +477,8 @@ class _ForumScreenState extends State<ForumScreen> {
 
   @override
   void dispose() {
-    _postController.dispose();
+    _contentController.dispose();
+    _headerController.dispose();
     _commentController.dispose();
     super.dispose();
   }

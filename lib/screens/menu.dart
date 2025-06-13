@@ -43,7 +43,7 @@ class MenuSayfasi extends StatelessWidget {
                 ),
                 children: [
                   _menuButonu("egitim.png", "Eğitim", context, screenWidth),
-                  _menuButonu("forum.png", "Forum", context, screenWidth),
+                  _menuButonu("forum.png", "Forum", context, screenWidth ),
                   _menuButonu(
                     "person.png",
                     "Kişisel Bilgiler",
