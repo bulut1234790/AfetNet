@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:afetnet/screens/menu.dart';
+import 'package:afetnet/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
@@ -301,6 +302,12 @@ class _MapScreenState extends State<MapScreen> {
                       size: 28,
                     ),
                     onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ProfileScreen(),
+                        ),
+                      );
                       // Kişi butonuna basılınca yapılacaklar
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Kişi butonuna tıklandı')),
