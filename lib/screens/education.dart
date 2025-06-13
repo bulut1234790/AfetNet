@@ -14,11 +14,11 @@ void main() {
 
 class EducationPage extends StatelessWidget {
   final Map<String, String> topics = {
-    "Deprem": "https://www.youtube.com/watch?v=link1",
-    "Sel": "https://www.youtube.com/watch?v=link2",
-    "Çığ": "https://www.youtube.com/watch?v=link3",
-    "Yangın": "https://www.youtube.com/watch?v=link4",
-    "Heyelan": "https://www.youtube.com/watch?v=link5",
+    "Deprem": "https://youtu.be/oZeI0X40EEY?si=a5ReATUoRZJl0j-Q",
+    "Sel": "https://youtu.be/OKYgIFOiur8?si=C2vB7-OVBICOTk48",
+    "Çığ": "https://youtu.be/1f6-6j7FlAo?si=mexCU0TsNb80G9qz",
+    "Yangın": "https://youtu.be/Suyeb3Jsp08?si=RujfBbEH0_mW9oFe",
+    "Heyelan": "https://youtu.be/nPUcxKI3PEs?si=GKFK-PJXVfcL-wGH",
   };
 
   EducationPage({super.key});
