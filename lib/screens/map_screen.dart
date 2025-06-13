@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 import 'fener.dart';
 import "pusula.dart";
 import "duduk.dart";
-import 'package:font_awesome_flutter/font_awesome_flutter.dart'; // Font Awesome importu
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -21,27 +21,23 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen>
     with SingleTickerProviderStateMixin {
-  // SingleTickerProviderStateMixin eklendi
   LatLng? _currentLocation;
   final MapController _mapController = MapController();
 
   bool showEmergencyOptions = false;
-  // bool showToolsOptions = false; // Artık buna ihtiyacımız yok, animateToolsButton ile kontrol edilecek
 
-  // Animasyon kontrolcüleri
   late AnimationController _toolsAnimationController;
   late Animation<double> _toolsAnimation;
 
-  double? temperature; // Hava durumu değişkenleri korunuyor
-  bool isWeatherLoading = true; // Hava durumu değişkenleri korunuyor
+  double? temperature;
+  bool isWeatherLoading = true;
 
   @override
   void initState() {
     super.initState();
     _getCurrentLocation();
-    fetchWeather(); // Hava durumu verisini al
+    fetchWeather();
 
-    // Animasyon kontrolcüsü başlatılıyor
     _toolsAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
@@ -52,13 +48,9 @@ class _MapScreenState extends State<MapScreen>
     );
   }
 
-  // Hava durumu verisi çekme fonksiyonu - bu kısım ayrı WeatherScreen'e taşınmadığı için burada kaldı.
-  // Eğer tamamiyle silmek isterseniz bu fonksiyonu ve ilgili setState çağrılarını kaldırabilirsiniz.
   Future<void> fetchWeather() async {
-    double lat =
-        _currentLocation?.latitude ?? 41.0082; // Varsayılan: İstanbul enlem
-    double lon =
-        _currentLocation?.longitude ?? 28.9784; // Varsayılan: İstanbul boylam
+    double lat = _currentLocation?.latitude ?? 41.0082;
+    double lon = _currentLocation?.longitude ?? 28.9784;
 
     final url =
         'https://api.open-meteo.com/v1/forecast?latitude=$lat&longitude=$lon&current_weather=true';
@@ -75,18 +67,15 @@ class _MapScreenState extends State<MapScreen>
       setState(() {
         isWeatherLoading = false;
       });
-      // Hava durumu çekilirken bir hata olursa kullanıcıya bildirim verebilirsin
-      // debugPrint('Hava durumu alınamadı: $e');
     }
   }
 
   @override
   void dispose() {
-    _toolsAnimationController.dispose(); // Animasyon kontrolcüsünü temizle
+    _toolsAnimationController.dispose();
     super.dispose();
   }
 
-  // Araçlar butonlarının görünürlüğünü yöneten fonksiyon
   void _toggleToolsOptions() {
     setState(() {
       if (_toolsAnimationController.isCompleted) {
@@ -131,7 +120,7 @@ class _MapScreenState extends State<MapScreen>
             ],
           ),
 
-          // --- Hava Durumu Kutusu (sol üst) ---
+          // Hava Durumu
           Positioned(
             top: MediaQuery.of(context).padding.top + 16,
             left: 16,
@@ -156,7 +145,7 @@ class _MapScreenState extends State<MapScreen>
             ),
           ),
 
-          // --- Yardım Noktaları Butonu ---
+          // Yardım Noktaları Butonu
           Positioned(
             top: MediaQuery.of(context).padding.top + 16,
             right: 16,
@@ -188,25 +177,7 @@ class _MapScreenState extends State<MapScreen>
             ),
           ),
 
-          // --- Konumumu Gör Butonu ---
-          Positioned(
-            bottom: 120,
-            left: 0,
-            right: 0,
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: FloatingActionButton(
-                onPressed: _getCurrentLocation,
-                backgroundColor: Colors.blue,
-                mini: false,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: const Icon(Icons.my_location, color: Colors.white),
-              ),
-            ),
-          ),
-          // --- Acil Yardım Seçenekleri ---
+          // Acil Yardım Seçenekleri
           Positioned(
             bottom: 120,
             left: 20,
@@ -228,19 +199,16 @@ class _MapScreenState extends State<MapScreen>
             ),
           ),
 
-          // --- Araçlar Seçenekleri (Animasyonlu) ---
+          // Araçlar Seçenekleri
           Positioned(
             bottom: 120,
             right: 20,
             child: SizeTransition(
-              // Yeni: Boyut geçişi için SizeTransition
               sizeFactor: _toolsAnimation,
               axis: Axis.vertical,
-              axisAlignment: 1.0, // Alt kısımdan yukarı doğru açılmasını sağlar
+              axisAlignment: 1.0,
               child: Column(
-                // Row yerine Column kullandık, çünkü butonlar dikeyde açılacak
-                crossAxisAlignment:
-                    CrossAxisAlignment.end, // Butonları sağa hizala
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   toolButton(FontAwesomeIcons.lightbulb, "El Feneri", () {
                     Navigator.push(
@@ -249,10 +217,9 @@ class _MapScreenState extends State<MapScreen>
                         builder: (context) => const FenerSayfasi(),
                       ),
                     );
-                    _toolsAnimationController
-                        .reverse(); // Sayfaya giderken menüyü kapat
+                    _toolsAnimationController.reverse();
                   }),
-                  const SizedBox(height: 8), // Dikey boşluk
+                  const SizedBox(height: 8),
                   toolButton(FontAwesomeIcons.compass, "Pusula", () {
                     Navigator.push(
                       context,
@@ -260,10 +227,9 @@ class _MapScreenState extends State<MapScreen>
                         builder: (context) => const PusulaSayfasi(),
                       ),
                     );
-                    _toolsAnimationController
-                        .reverse(); // Sayfaya giderken menüyü kapat
+                    _toolsAnimationController.reverse();
                   }),
-                  const SizedBox(height: 8), // Dikey boşluk
+                  const SizedBox(height: 8),
                   toolButton(FontAwesomeIcons.volumeHigh, "Düdük", () {
                     Navigator.push(
                       context,
@@ -271,15 +237,14 @@ class _MapScreenState extends State<MapScreen>
                         builder: (context) => const DudukSayfasi(),
                       ),
                     );
-                    _toolsAnimationController
-                        .reverse(); // Sayfaya giderken menüyü kapat
+                    _toolsAnimationController.reverse();
                   }),
                 ],
               ),
             ),
           ),
 
-          // --- Alt Butonlar ---
+          // Alt Menü Butonları
           Positioned(
             bottom: 40,
             left: 20,
@@ -309,7 +274,6 @@ class _MapScreenState extends State<MapScreen>
                     tooltip: "Harita",
                     icon: const Icon(Icons.map, color: Colors.white, size: 28),
                     onPressed: () {
-                      // Harita butonuna basılınca yapılacaklar
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Harita butonuna tıklandı'),
@@ -317,16 +281,29 @@ class _MapScreenState extends State<MapScreen>
                       );
                     },
                   ),
-                  // Yeni Araçlar butonu
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      shape: const CircleBorder(),
+                      padding: const EdgeInsets.all(12),
+                      foregroundColor: Colors.white,
+                      elevation: 4,
+                    ),
+                    onPressed: _getCurrentLocation,
+                    child: const Icon(
+                      Icons.my_location,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                  ),
                   IconButton(
                     tooltip: "Araçlar",
                     icon: const Icon(
                       Icons.construction,
                       color: Colors.white,
                       size: 28,
-                    ), // İnşaat veya araçlar ikonu
-                    onPressed:
-                        _toggleToolsOptions, // Araçlar seçeneklerini göster/gizle
+                    ),
+                    onPressed: _toggleToolsOptions,
                   ),
                   IconButton(
                     tooltip: "Bildirim",
@@ -336,31 +313,10 @@ class _MapScreenState extends State<MapScreen>
                       size: 28,
                     ),
                     onPressed: () {
-                      // Bildirim butonuna basılınca yapılacaklar
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Bildirim butonuna tıklandı'),
                         ),
-                      );
-                    },
-                  ),
-                  IconButton(
-                    tooltip: "Kişi",
-                    icon: const Icon(
-                      Icons.person,
-                      color: Colors.white,
-                      size: 28,
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const ProfileScreen(),
-                        ),
-                      );
-                      // Kişi butonuna basılınca yapılacaklar
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Kişi butonuna tıklandı')),
                       );
                     },
                   ),
@@ -395,34 +351,13 @@ class _MapScreenState extends State<MapScreen>
     );
   }
 
-  // `toolButton` widget'ını Font Awesome ikonları için uyarladık.
-  // Artık `IconData` yerine `FaIcon` kullanıyoruz.
   Widget toolButton(IconData icon, String tooltip, VoidCallback onPressed) {
     return Tooltip(
       message: tooltip,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.green.shade300,
-          shape: const CircleBorder(),
-          padding: const EdgeInsets.all(16),
-          foregroundColor: Colors.white, // İkon rengini beyaz yapar
-        ),
+      child: IconButton(
+        icon: Icon(icon, color: Colors.white, size: 28),
         onPressed: onPressed,
-        // Font Awesome ikonunu doğrudan FaIcon widget'ı ile kullanıyoruz
-        child: FaIcon(
-          icon,
-          color: Colors.white, // İkon rengini burada da belirtebiliriz
-        ),
       ),
-    );
-  }
-
-  ButtonStyle buttonStyle() {
-    return ElevatedButton.styleFrom(
-      backgroundColor: Colors.green,
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-      foregroundColor: Colors.white,
     );
   }
 
