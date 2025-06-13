@@ -43,67 +43,108 @@ class _DudukSayfasiState extends State<DudukSayfasi> {
   @override
   Widget build(BuildContext context) {
     // Butonlar için ortak bir genişlik tanımlayalım
-    // Bu değeri buton metinleri ve ikonlarına göre ayarlayabilirsiniz.
-    // Yaklaşık olarak geniş bir değer seçildi.
     const double buttonWidth = 250.0;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Düdük"),
-        backgroundColor: Colors.brown.shade400, // AppBar rengi
+        title: const Text(
+          "Düdük",
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold, // Başlığı daha belirgin yap
+          ),
+        ),
+        backgroundColor: Colors.brown.shade700, // AppBar rengini koyulaştıralım
         foregroundColor: Colors.white, // Başlık rengi
+        elevation: 8, // AppBar'a gölge ekleyelim
+        shape: const RoundedRectangleBorder(
+          // AppBar'ın alt kenarına yuvarlaklık verelim
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+        ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Sesi Çal butonu (tasarımı korunmuştur)
-            SizedBox(
-              // Buton genişliğini sabitlemek için SizedBox eklendi
-              width: buttonWidth,
-              child: ElevatedButton.icon(
-                onPressed: _playAlarm, // _playAlarm fonksiyonunu çağır
-                icon: const Icon(Icons.volume_up, size: 30),
-                label: const Text("Sesi Çal", style: TextStyle(fontSize: 20)),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.redAccent,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 40,
-                    vertical: 15,
+      body: Container(
+        // Ekranın tamamını kapla ve gradient arka plan ver
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Colors.brown.shade200, // Açık kahverengi tonu
+              Colors.grey.shade300, // Açık gri tonu
+              Colors.blueGrey.shade100, // Çok hafif mavimsi gri
+            ],
+          ),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Ses ikonu veya görseli
+              Icon(
+                Icons.volume_up_sharp, // Daha belirgin bir ikon
+                size: 100, // Büyük ikon
+                color: Colors.brown.shade800, // Koyu kahverengi ikon rengi
+              ),
+              const SizedBox(height: 40), // İkon ile butonlar arasına boşluk
+              // Sesi Çal butonu
+              SizedBox(
+                width: buttonWidth,
+                child: ElevatedButton.icon(
+                  onPressed: _playAlarm,
+                  icon: const Icon(Icons.play_arrow, size: 30), // Play ikonu
+                  label: const Text(
+                    "Sesi Çal",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        Colors.redAccent.shade700, // Kırmızı tonunu koyulaştır
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 40,
+                      vertical: 18,
+                    ), // Dikey padding'i biraz daha artır
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        12,
+                      ), // Köşeleri biraz daha yuvarla
+                    ),
+                    elevation: 8, // Butona gölge ekle
+                    shadowColor: Colors.redAccent.shade200, // Gölge rengi
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 30),
-            // Sesi Durdur butonu (tasarımı korunmuştur)
-            SizedBox(
-              // Buton genişliğini sabitlemek için SizedBox eklendi
-              width: buttonWidth,
-              child: ElevatedButton.icon(
-                onPressed: _stopAlarm, // _stopAlarm fonksiyonunu çağır
-                icon: const Icon(Icons.volume_off, size: 30),
-                label: const Text(
-                  "Sesi Durdur",
-                  style: TextStyle(fontSize: 20),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueGrey,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 40,
-                    vertical: 15,
+              const SizedBox(height: 25), // Butonlar arasına boşluk
+              // Sesi Durdur butonu
+              SizedBox(
+                width: buttonWidth,
+                child: ElevatedButton.icon(
+                  onPressed: _stopAlarm,
+                  icon: const Icon(Icons.stop, size: 30), // Stop ikonu
+                  label: const Text(
+                    "Sesi Durdur",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        Colors.blueGrey.shade700, // Mavi-gri tonunu koyulaştır
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 40,
+                      vertical: 18,
+                    ), // Dikey padding'i biraz daha artır
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        12,
+                      ), // Köşeleri biraz daha yuvarla
+                    ),
+                    elevation: 8, // Butona gölge ekle
+                    shadowColor: Colors.blueGrey.shade200, // Gölge rengi
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

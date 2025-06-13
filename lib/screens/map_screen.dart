@@ -19,12 +19,18 @@ class MapScreen extends StatefulWidget {
   State<MapScreen> createState() => _MapScreenState();
 }
 
-class _MapScreenState extends State<MapScreen> {
+class _MapScreenState extends State<MapScreen>
+    with SingleTickerProviderStateMixin {
+  // SingleTickerProviderStateMixin eklendi
   LatLng? _currentLocation;
   final MapController _mapController = MapController();
 
   bool showEmergencyOptions = false;
-  bool showToolsOptions = false;
+  // bool showToolsOptions = false; // Artık buna ihtiyacımız yok, animateToolsButton ile kontrol edilecek
+
+  // Animasyon kontrolcüleri
+  late AnimationController _toolsAnimationController;
+  late Animation<double> _toolsAnimation;
 
   double? temperature; // Hava durumu değişkenleri korunuyor
   bool isWeatherLoading = true; // Hava durumu değişkenleri korunuyor
@@ -34,6 +40,16 @@ class _MapScreenState extends State<MapScreen> {
     super.initState();
     _getCurrentLocation();
     fetchWeather(); // Hava durumu verisini al
+
+    // Animasyon kontrolcüsü başlatılıyor
+    _toolsAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    _toolsAnimation = CurvedAnimation(
+      parent: _toolsAnimationController,
+      curve: Curves.easeInOut,
+    );
   }
 
   // Hava durumu verisi çekme fonksiyonu - bu kısım ayrı WeatherScreen'e taşınmadığı için burada kaldı.
@@ -62,6 +78,23 @@ class _MapScreenState extends State<MapScreen> {
       // Hava durumu çekilirken bir hata olursa kullanıcıya bildirim verebilirsin
       // debugPrint('Hava durumu alınamadı: $e');
     }
+  }
+
+  @override
+  void dispose() {
+    _toolsAnimationController.dispose(); // Animasyon kontrolcüsünü temizle
+    super.dispose();
+  }
+
+  // Araçlar butonlarının görünürlüğünü yöneten fonksiyon
+  void _toggleToolsOptions() {
+    setState(() {
+      if (_toolsAnimationController.isCompleted) {
+        _toolsAnimationController.reverse();
+      } else {
+        _toolsAnimationController.forward();
+      }
+    });
   }
 
   @override
@@ -99,8 +132,6 @@ class _MapScreenState extends State<MapScreen> {
           ),
 
           // --- Hava Durumu Kutusu (sol üst) ---
-          // Hava durumu kutusu burada korunmuştur, ikonları ve açıklamaları WeatherScreen'e taşındı.
-          // Sadece sıcaklık gösterimi burada kaldı.
           Positioned(
             top: MediaQuery.of(context).padding.top + 16,
             left: 16,
@@ -159,7 +190,7 @@ class _MapScreenState extends State<MapScreen> {
 
           // --- Konumumu Gör Butonu ---
           Positioned(
-            bottom: 120, // 90'dan 110'a yükselttim
+            bottom: 120,
             left: 0,
             right: 0,
             child: Align(
@@ -197,45 +228,53 @@ class _MapScreenState extends State<MapScreen> {
             ),
           ),
 
-          // --- Araçlar Seçenekleri ---
+          // --- Araçlar Seçenekleri (Animasyonlu) ---
           Positioned(
             bottom: 120,
             right: 20,
-            child: AnimatedOpacity(
-              duration: const Duration(milliseconds: 300),
-              opacity: showToolsOptions ? 1.0 : 0.0,
-              child: IgnorePointer(
-                ignoring: !showToolsOptions,
-                child: Row(
-                  children: [
-                    toolButton(FontAwesomeIcons.lightbulb, "El Feneri", () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const FenerSayfasi(),
-                        ),
-                      );
-                    }),
-                    const SizedBox(width: 8),
-                    toolButton(FontAwesomeIcons.compass, "Pusula", () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const PusulaSayfasi(),
-                        ),
-                      );
-                    }),
-                    const SizedBox(width: 8),
-                    toolButton(FontAwesomeIcons.volumeHigh, "Düdük", () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const DudukSayfasi(),
-                        ),
-                      );
-                    }),
-                  ],
-                ),
+            child: SizeTransition(
+              // Yeni: Boyut geçişi için SizeTransition
+              sizeFactor: _toolsAnimation,
+              axis: Axis.vertical,
+              axisAlignment: 1.0, // Alt kısımdan yukarı doğru açılmasını sağlar
+              child: Column(
+                // Row yerine Column kullandık, çünkü butonlar dikeyde açılacak
+                crossAxisAlignment:
+                    CrossAxisAlignment.end, // Butonları sağa hizala
+                children: [
+                  toolButton(FontAwesomeIcons.lightbulb, "El Feneri", () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const FenerSayfasi(),
+                      ),
+                    );
+                    _toolsAnimationController
+                        .reverse(); // Sayfaya giderken menüyü kapat
+                  }),
+                  const SizedBox(height: 8), // Dikey boşluk
+                  toolButton(FontAwesomeIcons.compass, "Pusula", () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PusulaSayfasi(),
+                      ),
+                    );
+                    _toolsAnimationController
+                        .reverse(); // Sayfaya giderken menüyü kapat
+                  }),
+                  const SizedBox(height: 8), // Dikey boşluk
+                  toolButton(FontAwesomeIcons.volumeHigh, "Düdük", () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const DudukSayfasi(),
+                      ),
+                    );
+                    _toolsAnimationController
+                        .reverse(); // Sayfaya giderken menüyü kapat
+                  }),
+                ],
               ),
             ),
           ),
@@ -277,6 +316,17 @@ class _MapScreenState extends State<MapScreen> {
                         ),
                       );
                     },
+                  ),
+                  // Yeni Araçlar butonu
+                  IconButton(
+                    tooltip: "Araçlar",
+                    icon: const Icon(
+                      Icons.construction,
+                      color: Colors.white,
+                      size: 28,
+                    ), // İnşaat veya araçlar ikonu
+                    onPressed:
+                        _toggleToolsOptions, // Araçlar seçeneklerini göster/gizle
                   ),
                   IconButton(
                     tooltip: "Bildirim",
