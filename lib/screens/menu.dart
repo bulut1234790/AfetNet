@@ -42,8 +42,13 @@ class MenuSayfasi extends StatelessWidget {
                   childAspectRatio: 1 / 1.1,
                 ),
                 children: [
-                  _menuButonu("menu_education.png", "Eğitim", context, screenWidth),
-                  _menuButonu("menu_forum.png, "Forum", context, screenWidth),
+                  _menuButonu(
+                    "menu_education.png",
+                    "Eğitim",
+                    context,
+                    screenWidth,
+                  ),
+                  _menuButonu("menu_forum.png", "Forum", context, screenWidth),
                   _menuButonu(
                     "menu_person.png",
                     "Kişisel Bilgiler",
@@ -62,7 +67,12 @@ class MenuSayfasi extends StatelessWidget {
                     context,
                     screenWidth,
                   ),
-                  _menuButonu("menu_settings.png", "Ayarlar", context, screenWidth),
+                  _menuButonu(
+                    "menu_settings.png",
+                    "Ayarlar",
+                    context,
+                    screenWidth,
+                  ),
                 ],
               ),
             ),
