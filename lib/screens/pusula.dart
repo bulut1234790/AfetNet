@@ -44,12 +44,35 @@ class _PusulaSayfasiState extends State<PusulaSayfasi> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pusula'),
-        backgroundColor: Colors.brown[400], // AppBar rengi
-        foregroundColor: Colors.white, // AppBar başlık ve ikon rengi
+        title: const Text(
+          'Pusula',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold, // Başlığı daha belirgin yap
+          ),
+        ),
+        backgroundColor:
+            Colors.brown.shade700, // AppBar rengini koyu kahverengi yap
+        foregroundColor: Colors.white, // Başlık ve ikon rengi
+        elevation: 8, // AppBar'a gölge ekle
+        shape: const RoundedRectangleBorder(
+          // AppBar'ın alt kenarına yuvarlaklık ver
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+        ),
       ),
       body: Container(
-        color: const Color(0xFFF7F6E7), // Arka plan rengi
+        // Ekranın tamamını kapla ve gradient arka plan ver
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Colors.brown.shade800, // Koyu kahverengi başlangıç
+              Colors.brown.shade900, // Daha koyu kahverengi bitiş
+              Colors.grey.shade900, // Hafif koyu gri tonu
+            ],
+          ),
+        ),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -62,7 +85,10 @@ class _PusulaSayfasiState extends State<PusulaSayfasi> {
                     _errorMessage!,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Colors.red.shade700,
+                      color:
+                          Colors
+                              .red
+                              .shade400, // Hata mesajı için daha yumuşak kırmızı
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -71,65 +97,235 @@ class _PusulaSayfasiState extends State<PusulaSayfasi> {
               else if (_direction ==
                   null) // Pusula sensörü bulunamazsa veya henüz veri gelmediyse
                 const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CircularProgressIndicator(),
+                    CircularProgressIndicator(
+                      color: Colors.white,
+                    ), // Beyaz yükleme göstergesi
                     SizedBox(height: 16),
-                    Text('Pusula verisi yükleniyor...'),
+                    Text(
+                      'Pusula verisi yükleniyor...',
+                      style: TextStyle(color: Colors.white70, fontSize: 16),
+                    ),
                     Text(
                       'Lütfen cihazınızı düz bir zemine koyun veya kalibre edin.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white54, fontSize: 14),
                     ),
                   ],
                 )
               else // Pusula verisi mevcutsa
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    // Pusula kadranı (arka plan resmi)
-                    Image.asset(
-                      'assets/images/compass_face.png',
-                      width: 250, // Sabit genişlik
-                      height: 250, // Sabit yükseklik
-                      fit: BoxFit.contain, // Resmin kutucuğa sığmasını sağla
-                      errorBuilder:
-                          (context, error, stackTrace) => const Icon(
-                            Icons.image_not_supported,
-                            size: 150,
-                            color: Colors.grey,
-                          ),
+                // Derece bilgisini gösteren metin (En üste taşındı)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20.0),
+                  child: Text(
+                    '${_direction!.toStringAsFixed(0)}°', // Dereceyi tam sayı olarak göster
+                    style: const TextStyle(
+                      fontSize: 48, // Daha büyük font boyutu
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white, // Beyaz renk
+                      shadows: [
+                        // Metne gölge ekleme
+                        Shadow(
+                          blurRadius: 10.0,
+                          color: Colors.black,
+                          offset: Offset(2.0, 2.0),
+                        ),
+                      ],
                     ),
-                    // Pusula iğnesi (dönen kısım)
-                    Transform.rotate(
-                      // `_direction` değeri derece cinsindendir, -1 ile çarparak ters yöne döndürüyoruz (pusula iğnesi kuzeye bakmalı)
-                      // `math.pi / 180` ile dereceyi radyana çeviriyoruz.
-                      angle: ((_direction ?? 0) * (math.pi / 180) * -1),
-                      child: Image.asset(
-                        'assets/images/compass.jpg',
-                        width: 200, // Kadranın boyutuna göre ayarla
-                        height: 200, // Kadranın boyutuna göre ayarla
-                        fit: BoxFit.contain,
-                        errorBuilder:
-                            (context, error, stackTrace) => const Icon(
-                              Icons.error_outline,
-                              size: 100,
-                              color: Colors.red,
-                            ),
-                      ),
-                    ),
-                    // Derece bilgisini gösteren metin
-                    Text(
-                      '${_direction!.toStringAsFixed(1)}°', // Dereceyi bir ondalık basamakla göster
-                      style: const TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  // Pusula Kadranı (arka plan)
+                  Container(
+                    width: 280, // Genişletilmiş boyut
+                    height: 280, // Genişletilmiş boyut
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color:
+                          Colors
+                              .blueGrey
+                              .shade800, // Koyu gri-mavi kadran rengi
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.5),
+                          blurRadius: 20,
+                          spreadRadius: 8,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
+                      border: Border.all(color: Colors.grey.shade600, width: 4),
+                    ),
+                    child: Stack(
+                      // Kadran içindeki yön etiketleri için Stack kullanıldı
+                      children: [
+                        // Kuzey
+                        Positioned(
+                          top: 20,
+                          left: 0,
+                          right: 0,
+                          child: Center(
+                            child: Text(
+                              'KUZEY',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                shadows: [
+                                  Shadow(
+                                    blurRadius: 5.0,
+                                    color: Colors.black.withOpacity(0.5),
+                                    offset: const Offset(1.0, 1.0),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        // Doğu
+                        Positioned(
+                          right: 20,
+                          top: 0,
+                          bottom: 0,
+                          child: Center(
+                            child: Text(
+                              'DOĞU',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                shadows: [
+                                  Shadow(
+                                    blurRadius: 5.0,
+                                    color: Colors.black.withOpacity(0.5),
+                                    offset: const Offset(
+                                      -1.0,
+                                      1.0,
+                                    ), // Gölge yönü ayarlandı
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        // Güney
+                        Positioned(
+                          bottom: 20,
+                          left: 0,
+                          right: 0,
+                          child: Center(
+                            child: Text(
+                              'GÜNEY',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                shadows: [
+                                  Shadow(
+                                    blurRadius: 5.0,
+                                    color: Colors.black.withOpacity(0.5),
+                                    offset: const Offset(
+                                      1.0,
+                                      -1.0,
+                                    ), // Gölge yönü ayarlandı
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        // Batı
+                        Positioned(
+                          left: 20,
+                          top: 0,
+                          bottom: 0,
+                          child: Center(
+                            child: Text(
+                              'BATI',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                shadows: [
+                                  Shadow(
+                                    blurRadius: 5.0,
+                                    color: Colors.black.withOpacity(0.5),
+                                    offset: const Offset(1.0, 1.0),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Pusula İğnesi (dönen kısım)
+                  Transform.rotate(
+                    // `_direction` değeri derece cinsindendir, -1 ile çarparak ters yöne döndürüyoruz (pusula iğnesi kuzeye bakmalı)
+                    // `math.pi / 180` ile dereceyi radyana çeviriyoruz.
+                    angle: ((_direction ?? 0) * (math.pi / 180) * -1),
+                    child: Container(
+                      width: 250, // Kadranın biraz daha küçük
+                      height: 250,
+                      child: CustomPaint(
+                        painter: _CompassNeedlePainter(), // Özel iğne çizimi
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  // Dereceye göre ana yönü döndüren yardımcı fonksiyon (Artık ana yön harfleri kadran üzerinde sabit)
+  String _getCardinalDirection(double degree) {
+    // Bu fonksiyon artık kadranın kendisi üzerinde sabit "KUZEY" vb. yazıları için kullanılmıyor.
+    // Ancak ileride iğnenin ucuna bir etiket eklenmek istenirse kullanılabilir.
+    // Şimdilik boş bir dize döndürüyor.
+    return '';
+  }
+}
+
+// Özel Pusula İğnesi Çizimi
+class _CompassNeedlePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final centerX = size.width / 2;
+    final centerY = size.height / 2;
+    final radius = math.min(centerX, centerY);
+
+    // Kırmızı üçgen (Kuzey yönü)
+    final redPaint = Paint()..color = Colors.red.shade700;
+    final redPath = Path();
+    redPath.moveTo(centerX, centerY - radius * 0.8); // Üst nokta (Kuzey)
+    redPath.lineTo(centerX - radius * 0.15, centerY);
+    redPath.lineTo(centerX + radius * 0.15, centerY);
+    redPath.close();
+    canvas.drawPath(redPath, redPaint);
+
+    // Gri üçgen (Güney yönü)
+    final greyPaint = Paint()..color = Colors.grey.shade400;
+    final greyPath = Path();
+    greyPath.moveTo(centerX, centerY + radius * 0.8); // Alt nokta (Güney)
+    greyPath.lineTo(centerX - radius * 0.15, centerY);
+    greyPath.lineTo(centerX + radius * 0.15, centerY);
+    greyPath.close();
+    canvas.drawPath(greyPath, greyPaint);
+
+    // Ortadaki daire
+    final centerPaint = Paint()..color = Colors.white;
+    canvas.drawCircle(Offset(centerX, centerY), radius * 0.1, centerPaint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false; // İğne her zaman aynı çizilir, tekrar çizmeye gerek yok
   }
 }
