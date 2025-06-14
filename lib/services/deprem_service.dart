@@ -7,9 +7,9 @@ import 'package:charset_converter/charset_converter.dart'; // ← yeni eklendi
 class DepremService {
   static Future<List<Deprem>> fetchDepremler() async {
     final response = await http.get(
-      Uri.parse('http://localhost/afetnet-backend/sondeprem/fetch_deprem.php'),
+      Uri.parse('http://10.0.2.2/afetnet-backend/sondeprem/fetch_deprem.php'),
     );
-    // Uri.parse('http://10.0.2.2/afetnet-backend/sondeprem/fetch_deprem.php
+    // Uri.parse('http://localhost/afetnet-backend/sondeprem/fetch_deprem.php
 
     if (response.statusCode == 200) {
       // ISO-8859-9 çözümlemesi

@@ -104,8 +104,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String? secilenSehir;
 
   Future<void> registerUser() async {
-    final url = Uri.parse("http://localhost/afetnet-backend/auth/register.php");
-    // // Uri.parse('http://10.0.2.2/afetnet-backend/auth/register.php);
+    // final url = Uri.parse("http://localhost/afetnet-backend/auth/register.php");
+    final url = Uri.parse('http://10.0.2.2/afetnet-backend/auth/register.php');
 
     final response = await http.post(
       url,

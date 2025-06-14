@@ -141,7 +141,6 @@ class _ForumScreenState extends State<ForumScreen> {
                     );
                   }
 
-                  Navigator.pop(context);
                   _loadPosts();
                 },
                 child: const Text(
