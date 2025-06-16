@@ -15,7 +15,8 @@ class ProfileScreen extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.teal,
         hintColor: Colors.amber[600],
-        cardTheme: CardThemeData( // burası CardTheme'di
+        cardTheme: CardThemeData(
+          // burası CardTheme'di
           elevation: 3,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -35,22 +36,13 @@ class ProfileScreen extends StatelessWidget {
           centerTitle: true,
           elevation: 0,
           backgroundColor: Colors.brown.shade400,
-          actions: [
-            IconButton(
-              icon: Icon(Icons.notifications, color: Colors.white),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: Icon(Icons.help_outline, color: Colors.white),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: Icon(Icons.person, color: Colors.white),
-              onPressed: () {},
-            ),
-          ],
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => Navigator.pop(context),
+          ),
         ),
         backgroundColor: Colors.grey[50],
+
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Column(

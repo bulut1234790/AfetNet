@@ -1,100 +1,182 @@
+import 'package:afetnet/screens/settings_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class SettingsScreen extends StatefulWidget {
-  final bool isDarkMode;
-  final bool notificationsEnabled;
-  final Function(bool) onThemeChanged;
-  final Function(bool) onNotificationsChanged;
-
-  const SettingsScreen({
-    super.key,
-    required this.isDarkMode,
-    required this.notificationsEnabled,
-    required this.onThemeChanged,
-    required this.onNotificationsChanged,
-  });
-
-  @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen> {
-  late bool _isDarkMode;
-  late bool _notificationsEnabled;
-
-  @override
-  void initState() {
-    super.initState();
-    _isDarkMode = widget.isDarkMode;
-    _notificationsEnabled = widget.notificationsEnabled;
-  }
+class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final settings = Provider.of<SettingsNotifier>(context);
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      appBar: AppBar(title: const Text("Ayarlar")),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
+      appBar: AppBar(
+        title: const Text(
+          "Ayarlar",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+        elevation: 0,
+        shape: const Border(bottom: BorderSide(color: Colors.grey, width: 0.5)),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Tema Seçimi",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            // Tema Seçimi Bölümü
+            Card(
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.color_lens,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          "Tema Seçimi",
+                          style: Theme.of(context).textTheme.titleLarge
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    const Text("Uygulamanızın görünümünü kişiselleştirin"),
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        // Açık Tema Seçeneği
+                        _buildThemeOption(
+                          context,
+                          selected: !settings.isDarkMode,
+                          icon: Icons.wb_sunny,
+                          title: "Açık",
+                          color: Colors.blueGrey[50]!,
+                          onTap: () => settings.toggleTheme(false),
+                        ),
+
+                        // Karanlık Tema Seçeneği
+                        _buildThemeOption(
+                          context,
+                          selected: settings.isDarkMode,
+                          icon: Icons.nights_stay,
+                          title: "Karanlık",
+                          color: Colors.grey[850]!,
+                          onTap: () => settings.toggleTheme(true),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        !_isDarkMode ? Colors.orange : Colors.grey[300],
-                    foregroundColor: Colors.black87,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 12,
+
+            const SizedBox(height: 25),
+
+            // Bildirimler Bölümü
+            Card(
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Column(
+                  children: [
+                    SwitchListTile(
+                      title: const Text(
+                        "Bildirimler",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: const Text("Uygulama bildirimlerini aç/kapat"),
+                      secondary: Icon(
+                        Icons.notifications,
+                        color:
+                            settings.notificationsEnabled
+                                ? Theme.of(context).primaryColor
+                                : Colors.grey,
+                      ),
+                      value: settings.notificationsEnabled,
+                      onChanged: (val) => settings.toggleNotifications(val),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0,
+                      ),
                     ),
-                  ),
-                  icon: const Icon(Icons.wb_sunny),
-                  label: const Text("Açık Tema"),
-                  onPressed: () {
-                    setState(() => _isDarkMode = false);
-                    widget.onThemeChanged(false);
-                  },
+                  ],
                 ),
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        _isDarkMode ? Colors.indigo : Colors.grey[300],
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 12,
-                    ),
-                  ),
-                  icon: const Icon(Icons.nightlight_round),
-                  label: const Text("Karanlık Tema"),
-                  onPressed: () {
-                    setState(() => _isDarkMode = true);
-                    widget.onThemeChanged(true);
-                  },
-                ),
-              ],
+              ),
             ),
-            const SizedBox(height: 30),
-            SwitchListTile(
-              title: const Text("Bildirimleri Aç"),
-              value: _notificationsEnabled,
-              onChanged: (value) {
-                setState(() {
-                  _notificationsEnabled = value;
-                });
-                widget.onNotificationsChanged(value);
-              },
-              secondary: const Icon(Icons.notifications_active),
+
+            const SizedBox(height: 25),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildThemeOption(
+    BuildContext context, {
+    required bool selected,
+    required IconData icon,
+    required String title,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        width: 120,
+        padding: const EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          color:
+              selected
+                  ? Theme.of(context).primaryColor.withOpacity(0.1)
+                  : Colors.transparent,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color:
+                selected
+                    ? Theme.of(context).primaryColor
+                    : Colors.grey.withOpacity(0.3),
+            width: selected ? 2 : 1,
+          ),
+        ),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+              child: Icon(
+                icon,
+                color:
+                    selected
+                        ? Theme.of(context).primaryColor
+                        : Colors.grey[600],
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              title,
+              style: TextStyle(
+                fontWeight: selected ? FontWeight.bold : FontWeight.normal,
+                color:
+                    selected
+                        ? Theme.of(context).primaryColor
+                        : Theme.of(context).textTheme.bodyLarge?.color,
+              ),
             ),
           ],
         ),

@@ -46,8 +46,10 @@ class EducationPage extends StatelessWidget {
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.emergency, size: 28),
-          onPressed: () {},
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         elevation: 5,
         shape: const RoundedRectangleBorder(

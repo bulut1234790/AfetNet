@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:afetnet/screens/menu.dart';
-import 'package:afetnet/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
