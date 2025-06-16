@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../models/forum_post.dart';
 import 'package:afetnet/services/forum_service.dart';
 import 'package:intl/intl.dart';
+import 'package:afetnet/services/comment_service.dart';
+import '../models/forum_comment.dart';
 
 class ForumScreen extends StatefulWidget {
   const ForumScreen({super.key});
@@ -20,16 +22,59 @@ class _ForumScreenState extends State<ForumScreen> {
 
   ForumPost? _selectedPost;
 
+  late Future<List<ForumComment>> futureComments; // Yorumları tutacak Future
+
   @override
   void initState() {
     super.initState();
     _loadPosts();
+    futureComments = Future.value([]);
   }
 
   void _loadPosts() {
     setState(() {
       futurePosts = ForumService.fetchPosts();
     });
+  }
+
+  // Seçilen bir post'un yorumlarını yükleme metodu
+  void _loadCommentsForPost(int postId) {
+    setState(() {
+      futureComments = CommentService.fetchCommentsForPost(postId);
+    });
+  }
+
+  void _addComment() async {
+    if (_selectedPost == null || _commentController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Yorum eklemek için bir gönderi seçmeli ve yorum girmelisiniz.',
+          ),
+        ),
+      );
+      return;
+    }
+
+    try {
+      await CommentService.addComment(
+        _selectedPost!.id,
+        _commentController.text,
+      );
+      _commentController
+          .clear(); // Yorum gönderildikten sonra metin kutusunu temizle
+      _loadCommentsForPost(_selectedPost!.id); // Yorumları yenile
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Yorum başarıyla eklendi!')));
+    } catch (e) {
+      print('DEBUG: Yorum eklerken hata: $e'); // Hata konsola yazdır
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Yorum eklenirken bir hata oluştu: ${e.toString()}'),
+        ),
+      );
+    }
   }
 
   Color getCategoryColor(String category) {
@@ -99,7 +144,7 @@ class _ForumScreenState extends State<ForumScreen> {
                   ),
                   onChanged: (value) {
                     setState(() {
-                      _selectedCategory = value; 
+                      _selectedCategory = value;
                     });
                   },
                 ),
@@ -159,6 +204,11 @@ class _ForumScreenState extends State<ForumScreen> {
   void _showPostDetail(ForumPost post) {
     setState(() {
       _selectedPost = post;
+
+      futureComments = Future.value([]);
+      _loadCommentsForPost(post.id);
+    
+
     });
   }
 
@@ -415,6 +465,54 @@ class _ForumScreenState extends State<ForumScreen> {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
                               ),
+                            ),   const SizedBox(height: 12),
+                            // Yorum listesi buraya gelecek -> FutureBuilder ekliyoruz!
+                            SizedBox(
+                              height: 200, // Yorum listesi için sabit bir yükseklik verin
+                              child: FutureBuilder<List<ForumComment>>(
+                                future: futureComments, // _loadCommentsForPost ile güncellenen futureComments
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                    print('DEBUG: Yorumlar yükleniyor (Waiting state)');
+                                    return const Center(child: CircularProgressIndicator());
+                                  } else if (snapshot.hasError) {
+                                    print('DEBUG: Yorumları yüklerken hata oluştu: ${snapshot.error}');
+                                    return Center(child: Text('Yorumlar yüklenirken hata oluştu: ${snapshot.error}'));
+                                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                                    print('DEBUG: Yorum verisi yok veya boş. HasData: ${snapshot.hasData}, Data Empty: ${snapshot.data?.isEmpty}');
+                                    return const Center(child: Text('Henüz yorum yok.'));
+                                  } else {
+                                    print('DEBUG: Yorumlar başarıyla yüklendi, liste hazırlanıyor. Yorum sayısı: ${snapshot.data!.length}');
+                                    return ListView.builder(
+                                      shrinkWrap: true, // Listeyi içindeki içeriğe göre küçült
+                                      itemCount: snapshot.data!.length,
+                                      itemBuilder: (context, index) {
+                                        final comment = snapshot.data![index];
+                                        return Card(
+                                          margin: const EdgeInsets.symmetric(vertical: 4),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  comment.username,
+                                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                                ),
+                                                Text(comment.content),
+                                                Text(
+                                                  DateFormat('dd/MM/yyyy HH:mm').format(comment.dateTime),
+                                                  style: const TextStyle(color: Colors.grey, fontSize: 12),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  }
+                                },
+                              ),
                             ),
                             const SizedBox(height: 12),
                             TextField(
@@ -427,7 +525,7 @@ class _ForumScreenState extends State<ForumScreen> {
                                     color: Colors.brown,
                                   ),
                                   onPressed: () {
-                                    // Yorum gönderme işlemi
+                                    _addComment();
                                     _commentController.clear();
                                   },
                                 ),
