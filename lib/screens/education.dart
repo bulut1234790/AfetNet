@@ -34,7 +34,7 @@ class EducationPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       appBar: AppBar(
-        backgroundColor: const Color(0xFFE67F22),
+        backgroundColor: Color(0xFF8D6E63),
         title: const Text(
           'Afet Eğitimleri',
           style: TextStyle(

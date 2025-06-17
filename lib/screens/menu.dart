@@ -25,7 +25,7 @@ class MenuSayfasi extends StatelessWidget {
           ), // AppBar başlık rengini beyaz yap
         ),
         centerTitle: true,
-        backgroundColor: Colors.brown[400],
+        backgroundColor: const Color(0xFF8D6E63),
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back,

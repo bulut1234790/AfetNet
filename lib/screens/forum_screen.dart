@@ -230,7 +230,7 @@ class _ForumScreenState extends State<ForumScreen> {
           "AfetNet Forum",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: const Color.fromARGB(255, 146, 194, 154),
+        backgroundColor: Colors.brown.shade400,
         centerTitle: true,
         elevation: 4,
       ),
