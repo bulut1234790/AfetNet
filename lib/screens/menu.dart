@@ -21,8 +21,10 @@ class MenuSayfasi extends StatelessWidget {
           "AfetNet",
           style: TextStyle(
             color: Colors.white,
+            fontWeight: FontWeight.bold,
           ), // AppBar başlık rengini beyaz yap
         ),
+        centerTitle: true,
         backgroundColor: Colors.brown[400],
         leading: IconButton(
           icon: const Icon(
@@ -82,37 +84,45 @@ class MenuSayfasi extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
+
+            SizedBox(
+              width:
+                  MediaQuery.of(context).size.width *
+                  0.85, // Ekranın %85’i kadar genişlik
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green[700],
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 40,
-                    vertical: 16,
-                  ),
+                  backgroundColor: const Color(0xFF27AE60),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                      10,
-                    ), // Daha az yuvarlak kenar
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  foregroundColor:
-                      Colors.white, // Buton metin rengini beyaz yap
+                  elevation: 3,
                 ),
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => MapScreen()),
-                  ); // Anasayfaya geri dön
+                  );
                 },
-                child: const Text(
-                  "ANASAYFA",
-                  style: TextStyle(
-                    fontSize: 16,
-                  ), // Font boyutunu sabit tutabiliriz
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.home, color: Colors.white),
+                    SizedBox(width: 10),
+                    Text(
+                      "ANASAYFA",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
+
+            const SizedBox(height: 50),
           ],
         ),
       ),

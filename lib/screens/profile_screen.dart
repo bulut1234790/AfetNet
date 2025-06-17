@@ -27,7 +27,7 @@ class ProfileScreen extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: Text(
-            'AFETNET',
+            'Kişisel Bilgiler',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Color(0xFF4E342E),

@@ -17,8 +17,8 @@ class SettingsScreen extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
+        backgroundColor: Colors.orange,
         elevation: 0,
-        shape: const Border(bottom: BorderSide(color: Colors.grey, width: 0.5)),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),

@@ -1,4 +1,3 @@
-import 'package:afetnet/screens/map_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -52,9 +51,6 @@ class EducationPage extends StatelessWidget {
           },
         ),
         elevation: 5,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(15)),
-        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -152,38 +148,7 @@ class EducationPage extends StatelessWidget {
                 },
               ),
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF27AE60),
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                elevation: 3,
-              ),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.home, color: Colors.white),
-                  SizedBox(width: 10),
-                  Text(
-                    "ANASAYFA",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MapScreen()),
-                );
-              },
-            ),
+            const SizedBox(height: 50),
           ],
         ),
       ),
@@ -202,11 +167,9 @@ class InfoPage extends StatelessWidget {
           'Bilinçlendirme Metni',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
+        centerTitle: true,
         backgroundColor: const Color(0xFFE67F22),
         elevation: 5,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(15)),
-        ),
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -260,7 +223,11 @@ class InfoPage extends StatelessWidget {
                             ),
                             TextSpan(
                               text:
-                                  'hayati öneme sahiptir. Deprem, sel, yangın gibi doğal afetlerde önceden alınan önlemler can kayıplarını azaltır.\n\n',
+                                  'hayati öneme sahiptir. Deprem, sel, yangın gibi doğal afetlerde önceden alınan önlemler can kayıplarını azaltır.Deprem, sel, yangın, heyelan gibi doğal afetler, dünyanın her yerinde yaşanmakta ve maalesef önceden haber vermezler. Ancak bu, çaresiz olduğumuz anlamına gelmez.'
+                                  'Önceden alınan tedbirler ve bilinçli davranışlar, can ve mal kayıplarını büyük ölçüde azaltır, hayatları kurtarır.'
+                                  'Her birey afetlere karşı hazırlıklı olmalı ve afet anında ne yapacağını bilmelidir.'
+                                  'Bu hazırlık, sadece kendimiz için değil, sevdiklerimiz ve toplumumuz için de bir sorumluluktur'
+                                  'Afet bilinci, sadece afet anında değil, öncesi, sırası ve sonrasını kapsayan bir yaşam alışkanlığıdır.\n\n',
                             ),
                             TextSpan(
                               text: 'Temel Afet Bilgileri:\n',
@@ -280,36 +247,6 @@ class InfoPage extends StatelessWidget {
                     ],
                   ),
                 ),
-              ),
-              const Spacer(),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF27AE60),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  minimumSize: const Size.fromHeight(50),
-                  elevation: 3,
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.arrow_back, color: Colors.white),
-                    SizedBox(width: 10),
-                    Text(
-                      "GERİ DÖN",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
               ),
             ],
           ),

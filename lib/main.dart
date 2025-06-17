@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: settings.currentTheme,
       title: 'My App',
-      initialRoute: '/forum',
+      initialRoute: '/anasayfa',
       routes: {
         '/signin': (context) => SignInScreen(),
         '/register': (context) => RegisterScreen(),

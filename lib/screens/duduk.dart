@@ -48,19 +48,16 @@ class _DudukSayfasiState extends State<DudukSayfasi> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Düdük",
+          "DÜDÜK",
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold, // Başlığı daha belirgin yap
           ),
         ),
+        centerTitle: true,
         backgroundColor: Colors.brown.shade700, // AppBar rengini koyulaştıralım
         foregroundColor: Colors.white, // Başlık rengi
         elevation: 8, // AppBar'a gölge ekleyelim
-        shape: const RoundedRectangleBorder(
-          // AppBar'ın alt kenarına yuvarlaklık verelim
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
-        ),
       ),
       body: Container(
         // Ekranın tamamını kapla ve gradient arka plan ver

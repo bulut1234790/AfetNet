@@ -45,20 +45,17 @@ class _PusulaSayfasiState extends State<PusulaSayfasi> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Pusula',
+          'PUSULA',
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold, // Başlığı daha belirgin yap
           ),
         ),
+        centerTitle: true,
         backgroundColor:
             Colors.brown.shade700, // AppBar rengini koyu kahverengi yap
         foregroundColor: Colors.white, // Başlık ve ikon rengi
         elevation: 8, // AppBar'a gölge ekle
-        shape: const RoundedRectangleBorder(
-          // AppBar'ın alt kenarına yuvarlaklık ver
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
-        ),
       ),
       body: Container(
         // Ekranın tamamını kapla ve gradient arka plan ver
