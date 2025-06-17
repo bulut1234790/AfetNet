@@ -1,3 +1,9 @@
+import 'package:afetnet/screens/fener.dart';
+import 'package:afetnet/screens/menu.dart';
+import 'package:afetnet/screens/profile_screen.dart';
+import 'package:afetnet/screens/pusula.dart';
+import 'package:afetnet/screens/settings.dart';
+import 'package:afetnet/screens/sondepremler.dart';
 import 'package:flutter/material.dart';
 import '../models/forum_post.dart';
 import 'package:afetnet/services/forum_service.dart';
@@ -207,8 +213,6 @@ class _ForumScreenState extends State<ForumScreen> {
 
       futureComments = Future.value([]);
       _loadCommentsForPost(post.id);
-    
-
     });
   }
 
@@ -221,12 +225,13 @@ class _ForumScreenState extends State<ForumScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF7F6E7),
       appBar: AppBar(
         title: const Text(
           "AfetNet Forum",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
-        backgroundColor: const Color.fromARGB(255, 146, 194, 154),
+        backgroundColor: Colors.brown.shade400,
         centerTitle: true,
         elevation: 4,
       ),
@@ -465,44 +470,76 @@ class _ForumScreenState extends State<ForumScreen> {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
                               ),
-                            ),   const SizedBox(height: 12),
+                            ),
+                            const SizedBox(height: 12),
                             // Yorum listesi buraya gelecek -> FutureBuilder ekliyoruz!
                             SizedBox(
-                              height: 200, // Yorum listesi için sabit bir yükseklik verin
+                              height:
+                                  200, // Yorum listesi için sabit bir yükseklik verin
                               child: FutureBuilder<List<ForumComment>>(
-                                future: futureComments, // _loadCommentsForPost ile güncellenen futureComments
+                                future:
+                                    futureComments, // _loadCommentsForPost ile güncellenen futureComments
                                 builder: (context, snapshot) {
-                                  if (snapshot.connectionState == ConnectionState.waiting) {
-                                    print('DEBUG: Yorumlar yükleniyor (Waiting state)');
-                                    return const Center(child: CircularProgressIndicator());
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    print(
+                                      'DEBUG: Yorumlar yükleniyor (Waiting state)',
+                                    );
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
                                   } else if (snapshot.hasError) {
-                                    print('DEBUG: Yorumları yüklerken hata oluştu: ${snapshot.error}');
-                                    return Center(child: Text('Yorumlar yüklenirken hata oluştu: ${snapshot.error}'));
-                                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                                    print('DEBUG: Yorum verisi yok veya boş. HasData: ${snapshot.hasData}, Data Empty: ${snapshot.data?.isEmpty}');
-                                    return const Center(child: Text('Henüz yorum yok.'));
+                                    print(
+                                      'DEBUG: Yorumları yüklerken hata oluştu: ${snapshot.error}',
+                                    );
+                                    return Center(
+                                      child: Text(
+                                        'Yorumlar yüklenirken hata oluştu: ${snapshot.error}',
+                                      ),
+                                    );
+                                  } else if (!snapshot.hasData ||
+                                      snapshot.data!.isEmpty) {
+                                    print(
+                                      'DEBUG: Yorum verisi yok veya boş. HasData: ${snapshot.hasData}, Data Empty: ${snapshot.data?.isEmpty}',
+                                    );
+                                    return const Center(
+                                      child: Text('Henüz yorum yok.'),
+                                    );
                                   } else {
-                                    print('DEBUG: Yorumlar başarıyla yüklendi, liste hazırlanıyor. Yorum sayısı: ${snapshot.data!.length}');
+                                    print(
+                                      'DEBUG: Yorumlar başarıyla yüklendi, liste hazırlanıyor. Yorum sayısı: ${snapshot.data!.length}',
+                                    );
                                     return ListView.builder(
-                                      shrinkWrap: true, // Listeyi içindeki içeriğe göre küçült
+                                      shrinkWrap:
+                                          true, // Listeyi içindeki içeriğe göre küçült
                                       itemCount: snapshot.data!.length,
                                       itemBuilder: (context, index) {
                                         final comment = snapshot.data![index];
                                         return Card(
-                                          margin: const EdgeInsets.symmetric(vertical: 4),
+                                          margin: const EdgeInsets.symmetric(
+                                            vertical: 4,
+                                          ),
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Text(
                                                   comment.username,
-                                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 ),
                                                 Text(comment.content),
                                                 Text(
-                                                  DateFormat('dd/MM/yyyy HH:mm').format(comment.dateTime),
-                                                  style: const TextStyle(color: Colors.grey, fontSize: 12),
+                                                  DateFormat(
+                                                    'dd/MM/yyyy HH:mm',
+                                                  ).format(comment.dateTime),
+                                                  style: const TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 12,
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -558,14 +595,42 @@ class _ForumScreenState extends State<ForumScreen> {
         selectedItemColor: Colors.brown.shade800,
         unselectedItemColor: Colors.grey.shade600,
         type: BottomNavigationBarType.fixed,
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => MenuSayfasi()),
+              );
+              break;
+            case 1:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => DepremlerSayfasi()),
+              );
+              break;
+            case 3:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => SettingsScreen()),
+              );
+              break;
+            case 4:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => ProfileScreen()),
+              );
+              break;
+          }
+        },
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Ana Sayfa"),
-          BottomNavigationBarItem(icon: Icon(Icons.warning), label: "Acil"),
-          BottomNavigationBarItem(icon: Icon(Icons.forum), label: "Forum"),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Menü"),
           BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: "Bildirim",
+            icon: Icon(Icons.warning),
+            label: "Son Depremler",
           ),
+          BottomNavigationBarItem(icon: Icon(Icons.forum), label: "Forum"),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: "Ayarlar"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profil"),
         ],
       ),

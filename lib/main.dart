@@ -6,13 +6,23 @@ import 'package:afetnet/screens/map_screen.dart';
 import 'package:afetnet/screens/profile_screen.dart';
 import 'package:afetnet/screens/profile_update.dart';
 import 'package:afetnet/screens/register_screen.dart';
-
+import 'package:afetnet/screens/settings.dart';
+import 'package:afetnet/screens/settings_notifier.dart';
 import 'package:afetnet/screens/sign_in_screen.dart';
 import 'package:afetnet/screens/sondepremler.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => SettingsNotifier()),
+        // başka ChangeNotifier'lar da buraya eklenebilir
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -21,9 +31,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final settings = Provider.of<SettingsNotifier>(context);
     return MaterialApp(
+      theme: settings.currentTheme,
       title: 'My App',
-      initialRoute: '/register',
+      initialRoute: '/anasayfa',
       routes: {
         '/signin': (context) => SignInScreen(),
         '/register': (context) => RegisterScreen(),
@@ -35,6 +47,7 @@ class MyApp extends StatelessWidget {
         '/profile_update': (context) => ProfileUpdateScreen(),
         '/duduk': (context) => DudukSayfasi(),
         '/anasayfa': (context) => MapScreen(),
+        '/settings': (context) => SettingsScreen(),
       },
     );
   }

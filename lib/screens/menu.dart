@@ -1,4 +1,6 @@
 import "package:afetnet/screens/education.dart";
+import "package:afetnet/screens/emergency_contact.dart";
+import "package:afetnet/screens/map_screen.dart";
 import "package:afetnet/screens/profile_screen.dart";
 import "package:afetnet/screens/sondepremler.dart";
 import 'package:flutter/material.dart';
@@ -19,9 +21,11 @@ class MenuSayfasi extends StatelessWidget {
           "AfetNet",
           style: TextStyle(
             color: Colors.white,
+            fontWeight: FontWeight.bold,
           ), // AppBar başlık rengini beyaz yap
         ),
-        backgroundColor: Colors.brown[400],
+        centerTitle: true,
+        backgroundColor: const Color(0xFF8D6E63),
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back,
@@ -46,8 +50,8 @@ class MenuSayfasi extends StatelessWidget {
                   childAspectRatio: 1 / 1.1,
                 ),
                 children: [
-                  _menuButonu("menu_education.png", "Eğitim", context, screenWidth),
-                  _menuButonu("menu_forum.png", "Forum", context, screenWidth),
+                  _menuButonu("egitim.png", "Eğitim", context, screenWidth),
+                  _menuButonu("forum.png", "Forum", context, screenWidth),
                   _menuButonu(
                     "menu_person.png",
                     "Kişisel Bilgiler",
@@ -75,34 +79,45 @@ class MenuSayfasi extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
+
+            SizedBox(
+              width:
+                  MediaQuery.of(context).size.width *
+                  0.85, // Ekranın %85’i kadar genişlik
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green[700],
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 40,
-                    vertical: 16,
-                  ),
+                  backgroundColor: const Color(0xFF27AE60),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                      10,
-                    ), // Daha az yuvarlak kenar
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  foregroundColor:
-                      Colors.white, // Buton metin rengini beyaz yap
+                  elevation: 3,
                 ),
                 onPressed: () {
-                  Navigator.pop(context); // Anasayfaya geri dön
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MapScreen()),
+                  );
                 },
-                child: const Text(
-                  "ANASAYFA",
-                  style: TextStyle(
-                    fontSize: 16,
-                  ), // Font boyutunu sabit tutabiliriz
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.home, color: Colors.white),
+                    SizedBox(width: 10),
+                    Text(
+                      "ANASAYFA",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
+
+            const SizedBox(height: 50),
           ],
         ),
       ),
@@ -135,22 +150,7 @@ class MenuSayfasi extends StatelessWidget {
         if (metin == "Ayarlar") {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder:
-                  (context) => SettingsScreen(
-                    isDarkMode: false, // Uygulama durumuna göre ayarlanmalı
-                    notificationsEnabled:
-                        true, // Uygulama durumuna göre ayarlanmalı
-                    onThemeChanged: (value) {
-                      debugPrint("Tema değiştirildi: $value");
-                      // Burada uygulamanın ana temasını güncelleyecek kodu çağırabilirsin
-                    },
-                    onNotificationsChanged: (value) {
-                      debugPrint("Bildirim durumu: $value");
-                      // Burada bildirim ayarını güncelleyecek kodu çağırabilirsin
-                    },
-                  ),
-            ),
+            MaterialPageRoute(builder: (context) => SettingsScreen()),
           );
         } else if (metin == "Forum") {
           // BURASI EKLENDİ
@@ -177,6 +177,16 @@ class MenuSayfasi extends StatelessWidget {
             MaterialPageRoute(
               builder:
                   (context) => ProfileScreen(), // ForumScreen'e yönlendirme
+            ),
+          );
+        } else if (metin == "Yakın Bilgisi") {
+          // BURASI EKLENDİ
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder:
+                  (context) =>
+                      EmergencyContactsScreen(), // ForumScreen'e yönlendirme
             ),
           );
         } else if (metin == "Son Depremler") {

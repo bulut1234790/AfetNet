@@ -108,7 +108,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       theme: ThemeData(
         primarySwatch: Colors.teal,
         hintColor: Colors.amber[600],
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData( // burası CardTheme'di
           elevation: 3,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -119,7 +119,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       home: Scaffold(
         appBar: AppBar(
           title: Text(
-            'AFETNET',
+            'Kişisel Bilgiler',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Color(0xFF4E342E),
@@ -128,22 +128,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           centerTitle: true,
           elevation: 0,
           backgroundColor: Colors.brown.shade400,
-          actions: [
-            IconButton(
-              icon: Icon(Icons.notifications, color: Colors.white),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: Icon(Icons.help_outline, color: Colors.white),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: Icon(Icons.person, color: Colors.white),
-              onPressed: () {},
-            ),
-          ],
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => Navigator.pop(context),
+          ),
         ),
         backgroundColor: Colors.grey[50],
+
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Column(

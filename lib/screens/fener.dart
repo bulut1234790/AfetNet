@@ -49,13 +49,10 @@ class _FenerSayfasiState extends State<FenerSayfasi> {
             fontWeight: FontWeight.bold, // Başlığı daha belirgin yap
           ),
         ),
+        centerTitle: true,
         backgroundColor: Colors.grey.shade900, // AppBar rengini koyu gri yap
         foregroundColor: Colors.white, // Başlık ve ikon rengi
         elevation: 8, // AppBar'a gölge ekle
-        shape: const RoundedRectangleBorder(
-          // AppBar'ın alt kenarına yuvarlaklık ver
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
-        ),
       ),
       body: Container(
         // Ekranın tamamını kapla ve gradient arka plan ver
