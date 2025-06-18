@@ -35,7 +35,7 @@ class MenuSayfasi extends StatelessWidget {
         ),
       ),
       body: Container(
-        color: const Color(0xFFF7F6E7), // Arka plan rengi
+        // Arka plan rengi
         child: Column(
           children: [
             Expanded(
@@ -50,7 +50,12 @@ class MenuSayfasi extends StatelessWidget {
                   childAspectRatio: 1 / 1.1,
                 ),
                 children: [
-                  _menuButonu("menu_education.png", "Eğitim", context, screenWidth),
+                  _menuButonu(
+                    "menu_education.png",
+                    "Eğitim",
+                    context,
+                    screenWidth,
+                  ),
                   _menuButonu("menu_forum.png", "Forum", context, screenWidth),
                   _menuButonu(
                     "menu_person.png",
