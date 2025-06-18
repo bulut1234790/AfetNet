@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart'; // Yeni eklendi
 
 class WeatherScreen extends StatefulWidget {
   const WeatherScreen({super.key});
@@ -15,7 +16,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
   String? weatherDescription;
   IconData? weatherIcon;
   bool isLoading = true;
-  String? errorMessage; // Hata mesajlarını tutmak için yeni değişken
+  String? errorMessage;
+  String? cityName; // Yeni: Şehir adı için
 
   @override
   void initState() {
@@ -23,17 +25,15 @@ class _WeatherScreenState extends State<WeatherScreen> {
     _determinePositionAndFetchWeather();
   }
 
-  // Konum belirleme ve hava durumu çekme fonksiyonu
   Future<void> _determinePositionAndFetchWeather() async {
     setState(() {
-      isLoading = true; // Konum ve hava durumu yüklenirken göstergeyi aç
-      errorMessage = null; // Önceki hataları temizle
+      isLoading = true;
+      errorMessage = null;
     });
 
     bool serviceEnabled;
     LocationPermission permission;
 
-    // Konum servisi açık mı kontrol et
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       _showError('Konum servisleri kapalı. Lütfen açınız.');
@@ -57,7 +57,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
     }
 
     try {
-      // Mevcut konumu al
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
@@ -67,8 +66,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
     }
   }
 
-  // Hava durumu verisi çekme fonksiyonu
   Future<void> _fetchWeather(double lat, double lon) async {
+    // Şehir adını alma fonksiyonunu çağır
+    await _getCityName(lat, lon);
+
     final url =
         'https://api.open-meteo.com/v1/forecast?latitude=$lat&longitude=$lon&current_weather=true';
 
@@ -85,7 +86,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
           weatherDescription = info['desc'];
           weatherIcon = info['icon'];
           isLoading = false;
-          errorMessage = null; // Başarılı olunca hata mesajını temizle
+          errorMessage = null;
         });
       } else {
         throw Exception(
@@ -97,22 +98,38 @@ class _WeatherScreenState extends State<WeatherScreen> {
     }
   }
 
-  // Hata mesajını göstermek ve yükleme durumunu kapatmak için yardımcı fonksiyon
+  Future<void> _getCityName(double lat, double lon) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(lat, lon);
+      if (placemarks.isNotEmpty) {
+        setState(() {
+          cityName =
+              placemarks.first.locality ??
+              placemarks.first.subAdministrativeArea ??
+              'Bilinmeyen Şehir';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        cityName = 'Bilinmeyen Şehir';
+      });
+    }
+  }
+
   void _showError(String message) {
     setState(() {
       errorMessage = message;
       isLoading = false;
-      temperature = null; // Hata durumunda sıcaklığı da sıfırla
-      weatherDescription = null; // Hata durumunda açıklamayı sıfırla
-      weatherIcon = null; // Hata durumunda ikonu sıfırla
+      temperature = null;
+      weatherDescription = null;
+      weatherIcon = null;
+      cityName = null;
     });
-    // Kullanıcıya anlık bildirim verebiliriz
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(SnackBar(content: Text(message)));
   }
 
-  // Hava durumu kodlarına göre bilgileri (açıklama ve ikon) döndüren fonksiyon
   Map<String, dynamic> _getWeatherInfo(int code) {
     switch (code) {
       case 0:
@@ -141,10 +158,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
         return {"desc": "Yoğun Yağmurlu", "icon": Icons.cloudy_snowing};
       case 66:
       case 67:
-        return {
-          "desc": "Dondurucu Yağmur",
-          "icon": Icons.ac_unit,
-        }; // Icons.snowing_sharp yerine Icons.ac_unit veya Icons.cloudy_snowing kullanıldı
+        return {"desc": "Dondurucu Yağmur", "icon": Icons.ac_unit};
       case 71:
         return {"desc": "Hafif Karlı", "icon": Icons.cloudy_snowing};
       case 73:
@@ -163,10 +177,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
         return {"desc": "Hafif Kar Sağanağı", "icon": Icons.cloudy_snowing};
       case 86:
         return {"desc": "Yoğun Kar Sağanağı", "icon": Icons.snowing};
-      case 95: // Fırtına: Hafif veya orta
+      case 95:
         return {"desc": "Gök Gürültülü Fırtına", "icon": Icons.thunderstorm};
-      case 96: // Fırtına: Hafif dolu ile
-      case 99: // Fırtına: Yoğun dolu ile
+      case 96:
+      case 99:
         return {"desc": "Şiddetli Fırtına ve Dolu", "icon": Icons.thunderstorm};
       default:
         return {"desc": "Bilinmeyen Durum", "icon": Icons.help_outline};
@@ -179,7 +193,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
       appBar: AppBar(
         title: const Text('Hava Durumu'),
         backgroundColor: Colors.blue.shade700,
-        foregroundColor: Colors.white, // AppBar başlık ve ikon rengi
+        foregroundColor: Colors.white,
       ),
       body: Center(
         child:
@@ -256,14 +270,13 @@ class _WeatherScreenState extends State<WeatherScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    const Text(
-                      "Van, Van, Türkiye", // Konum bilgisi
-                      style: TextStyle(fontSize: 18, color: Colors.grey),
+                    Text(
+                      cityName ?? "Şehir bilgisi alınamadı",
+                      style: const TextStyle(fontSize: 18, color: Colors.grey),
                     ),
                   ],
                 )
                 : Column(
-                  // Hiçbir veri alınamayan ama hata da oluşmayan durum
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.cloud_off, size: 64, color: Colors.grey),
