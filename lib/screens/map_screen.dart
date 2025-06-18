@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'fener.dart';
 import "pusula.dart";
 import "duduk.dart";
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart'; // Font Awesome importu
 
 class MapScreen extends StatefulWidget {
@@ -268,38 +269,211 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                   mainAxisSize:
                       MainAxisSize.min, // Sadece içeriği kadar yer kapla
                   children: [
+                    // emergencyButton("Enkaz Altındayım", () {
+                    //   ScaffoldMessenger.of(context).showSnackBar(
+                    //     const SnackBar(
+                    //       content: Text('Enkaz Altındayım talebi gönderildi!'),
+                    //     ),
+                    //   );
+                    //   _emergencyAnimationController.reverse();
+                    // }),
+                    // emergencyButton("Sele Yakalandım", () {
+                    //   ScaffoldMessenger.of(context).showSnackBar(
+                    //     const SnackBar(
+                    //       content: Text('Sele Yakalandım talebi gönderildi!'),
+                    //     ),
+                    //   );
+                    //   _emergencyAnimationController.reverse();
+                    // }),
+                    // emergencyButton("Yangın Var", () {
+                    //   ScaffoldMessenger.of(context).showSnackBar(
+                    //     const SnackBar(
+                    //       content: Text('Yangın Var talebi gönderildi!'),
+                    //     ),
+                    //   );
+                    //   _emergencyAnimationController.reverse();
+                    // }),
+                    // emergencyButton("Diğer", () {
+                    //   ScaffoldMessenger.of(context).showSnackBar(
+                    //     const SnackBar(
+                    //       content: Text('Diğer talep gönderildi!'),
+                    //     ),
+                    //   );
+                    //   _emergencyAnimationController.reverse();
+                    // }),
+
+
+
+
+
                     emergencyButton("Enkaz Altındayım", () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Enkaz Altındayım talebi gönderildi!'),
+                      _emergencyAnimationController.reverse();
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text("Ne yapmak istiyorsunuz?"),
+                          content: const Text("Bu durumu acil yardım olarak mı bildireceksiniz yoksa sorun çözüldü mü?"),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                // 🔴 Acil yardım çağrısı gönderme işlemi
+                                sendEmergency(
+                                  context: context,
+                                  durumNotu: "Enkaz Altındayım",
+                                  durumBilgisi: "", // boş çünkü sorun çözülmedi
+                                );
+                                Navigator.pop(context);
+                                _emergencyAnimationController.reverse();
+                              },
+                              child: const Text("Acil Yardım Gönder"),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                // ✅ Sorun çözüldü bilgisi gönderme işlemi
+                                sendEmergency(
+                                  context: context,
+                                  durumNotu: "Enkaz Altındayım",
+                                  durumBilgisi: "Sorun çözüldü",
+                                );
+                                Navigator.pop(context);
+                                
+                              },
+                              child: const Text("Sorun Çözüldü"),
+                            ),
+                          ],
                         ),
                       );
                       _emergencyAnimationController.reverse();
                     }),
+
+
                     emergencyButton("Sele Yakalandım", () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Sele Yakalandım talebi gönderildi!'),
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text("Ne yapmak istiyorsunuz?"),
+                          content: const Text("Durum: Sele Yakalandım"),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                sendEmergency(
+                                  context: context,
+                                  durumNotu: "Sele Yakalandım",
+                                  durumBilgisi: "",
+                                );
+                                Navigator.pop(context);
+                              },
+                              child: const Text("Acil Yardım Gönder"),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                sendEmergency(
+                                  context: context,
+                                  durumNotu: "Sele Yakalandım",
+                                  durumBilgisi: "Sorun çözüldü",
+                                );
+                                Navigator.pop(context);
+                              },
+                              child: const Text("Sorun Çözüldü"),
+                            ),
+                          ],
                         ),
                       );
                       _emergencyAnimationController.reverse();
                     }),
+
+
                     emergencyButton("Yangın Var", () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Yangın Var talebi gönderildi!'),
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text("Ne yapmak istiyorsunuz?"),
+                          content: const Text("Durum: Yangın Var"),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                sendEmergency(
+                                  context: context,
+                                  durumNotu: "Yangın Var",
+                                  durumBilgisi: "",
+                                );
+                                Navigator.pop(context);
+                              },
+                              child: const Text("Acil Yardım Gönder"),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                sendEmergency(
+                                  context: context,
+                                  durumNotu: "Yangın Var",
+                                  durumBilgisi: "Sorun çözüldü",
+                                );
+                                Navigator.pop(context);
+                              },
+                              child: const Text("Sorun Çözüldü"),
+                            ),
+                          ],
                         ),
                       );
                       _emergencyAnimationController.reverse();
                     }),
+
+
                     emergencyButton("Diğer", () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Diğer talep gönderildi!'),
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text("Ne yapmak istiyorsunuz?"),
+                          content: const Text("Durum: Diğer"),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                sendEmergency(
+                                  context: context,
+                                  durumNotu: "Diğer",
+                                  durumBilgisi: "",
+                                );
+                                Navigator.pop(context);
+                              },
+                              child: const Text("Acil Yardım Gönder"),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                sendEmergency(
+                                  context: context,
+                                  durumNotu: "Diğer",
+                                  durumBilgisi: "Sorun çözüldü",
+                                );
+                                Navigator.pop(context);
+                              },
+                              child: const Text("Sorun Çözüldü"),
+                            ),
+                          ],
                         ),
                       );
                       _emergencyAnimationController.reverse();
                     }),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    
                   ],
                 ),
               ),
@@ -557,4 +731,98 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
       _mapController.move(_currentLocation!, 16.0);
     });
   }
+
+
+
+
+
+  
+
+
+
+
+  Future<void> sendEmergency({
+  required BuildContext context,
+  required String durumNotu,
+  required String durumBilgisi,
+}) async {
+  try {
+    // Konumu al
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+
+    double enlem = position.latitude;
+    double boylam = position.longitude;
+
+    // Tarih ve saat
+    String tarihSaat = DateTime.now().toString();
+
+    // Kullanıcı adı
+    final prefs = await SharedPreferences.getInstance();
+    String? kullaniciAdi = prefs.getString('kadi');
+
+    if (kullaniciAdi == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Kullanıcı adı bulunamadı, tekrar giriş yapın.")),
+      );
+      return;
+    }
+
+    // PHP API URL
+    final url = Uri.parse("http://10.0.2.2/afetnet-backend/acildurumkonum/ekle.php");
+
+    // POST isteği
+    final response = await http.post(
+      url,
+      body: {
+        "kullanici_adi": kullaniciAdi,
+        "enlem": enlem.toString(),
+        "boylam": boylam.toString(),
+        "tarih_saat": tarihSaat,
+        "durum_notu": durumNotu,
+        "durum_bilgisi": durumBilgisi,
+      },
+    );
+
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
+    if (response.statusCode == 200) {
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(content: Text("Bildiri başarıyla gönderildi.")),
+      // );
+
+
+      final data = json.decode(response.body);
+      if (data['success'] == true) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Bildiri başarıyla gönderildi.")),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Hata: ${data['error'] ?? 'Bilinmeyen hata'}")),
+        );
+      }
+
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Hata: Sunucu yanıt vermedi.")),
+      );
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Hata: $e")),
+    );
+  }
 }
+
+}
+
+
+
+
+
+
+
+
