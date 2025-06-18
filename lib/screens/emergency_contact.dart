@@ -169,14 +169,14 @@ class EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Acil Durum İletişimleri",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          "Yakın Bilgisi",
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: Colors.teal,
+        backgroundColor: Color(0xFF8D6E63),
         elevation: 5,
       ),
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Color(0xFFF7F6E7),
       body:
           contacts.isEmpty
               ? Center(

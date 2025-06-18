@@ -25,13 +25,11 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
       home: Scaffold(
+        backgroundColor: Color(0xFFF7F6E7),
         appBar: AppBar(
           title: Text(
             'Kişisel Bilgiler',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF4E342E),
-            ),
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
           ),
           centerTitle: true,
           elevation: 0,
@@ -41,7 +39,6 @@ class ProfileScreen extends StatelessWidget {
             onPressed: () => Navigator.pop(context),
           ),
         ),
-        backgroundColor: Colors.grey[50],
 
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),

@@ -11,13 +11,14 @@ class SettingsScreen extends StatelessWidget {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
+      backgroundColor: Color(0xFFF7F6E7),
       appBar: AppBar(
         title: const Text(
           "Ayarlar",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFF8D6E63),
         elevation: 0,
       ),
       body: SingleChildScrollView(

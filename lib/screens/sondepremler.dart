@@ -17,17 +17,18 @@ class _DepremlerSayfasiState extends State<DepremlerSayfasi> {
     super.initState();
     futureDepremler = DepremService.fetchDepremler();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF7F6E7),
       appBar: AppBar(
         title: Text(
           'Son Depremler',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: Colors.teal[700],
+        backgroundColor: Color(0xFF8D6E63),
         elevation: 0,
       ),
       body: FutureBuilder<List<Deprem>>(
