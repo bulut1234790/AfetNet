@@ -101,15 +101,23 @@ class _WeatherScreenState extends State<WeatherScreen> {
   Future<void> _getCityName(double lat, double lon) async {
     try {
       List<Placemark> placemarks = await placemarkFromCoordinates(lat, lon);
+      print("Placemarks: $placemarks");
+
       if (placemarks.isNotEmpty) {
         setState(() {
           cityName =
               placemarks.first.locality ??
               placemarks.first.subAdministrativeArea ??
+              placemarks.first.administrativeArea ??
               'Bilinmeyen Şehir';
+        });
+      } else {
+        setState(() {
+          cityName = 'Bilinmeyen Şehir';
         });
       }
     } catch (e) {
+      print("City name error: $e");
       setState(() {
         cityName = 'Bilinmeyen Şehir';
       });

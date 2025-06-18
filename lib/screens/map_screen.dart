@@ -189,11 +189,7 @@ class _MapScreenState extends State<MapScreen> with TickerProviderStateMixin {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
-                      Icons.wb_sunny_rounded,
-                      color: Colors.white,
-                      size: 24,
-                    ),
+                    const Icon(Icons.thermostat, color: Colors.white, size: 24),
                     const SizedBox(width: 8),
                     Text(
                       isWeatherLoading
