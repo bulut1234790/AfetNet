@@ -108,7 +108,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       theme: ThemeData(
         primarySwatch: Colors.teal,
         hintColor: Colors.amber[600],
-        cardTheme: CardThemeData( // burası CardTheme'di
+        cardTheme: CardThemeData(
+          // burası CardTheme'di
           elevation: 3,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -117,7 +118,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
       home: Scaffold(
-        backgroundColor: Color(0xFFF7F6E7),
         appBar: AppBar(
           title: Text(
             'Kişisel Bilgiler',
@@ -174,18 +174,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             SizedBox(height: 4),
                             _buildInfoRow(
-                                Icons.credit_card,
-                                "Kullanıcı Adı: ${kullaniciAdi.isNotEmpty ? kullaniciAdi : '...'}"),
+                              Icons.credit_card,
+                              "Kullanıcı Adı: ${kullaniciAdi.isNotEmpty ? kullaniciAdi : '...'}",
+                            ),
                             _buildInfoRow(
                               Icons.verified_user,
                               "Role: Volunteer",
                             ),
-                            _buildInfoRow(Icons.email,
-                                "Email: ${eposta.isNotEmpty ? eposta : '...'}"),
-                            _buildInfoRow(Icons.phone,
-                                "Telefon: ${numara.isNotEmpty ? numara : '...'}"),
-                            _buildInfoRow(Icons.location_on,
-                                "Şehir: ${sehir.isNotEmpty ? sehir : '...'}"),
+                            _buildInfoRow(
+                              Icons.email,
+                              "Email: ${eposta.isNotEmpty ? eposta : '...'}",
+                            ),
+                            _buildInfoRow(
+                              Icons.phone,
+                              "Telefon: ${numara.isNotEmpty ? numara : '...'}",
+                            ),
+                            _buildInfoRow(
+                              Icons.location_on,
+                              "Şehir: ${sehir.isNotEmpty ? sehir : '...'}",
+                            ),
                           ],
                         ),
                       ),
@@ -219,7 +226,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                       Divider(color: Colors.grey[300], height: 20),
-                      _buildContactInfo("Yakınınızın Telefonu", yakinNoController.text),
+                      _buildContactInfo(
+                        "Yakınınızın Telefonu",
+                        yakinNoController.text,
+                      ),
                     ],
                   ),
                 ),
@@ -288,7 +298,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   final updatedUser = await Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ProfileUpdateScreen()),
+                      builder: (context) => ProfileUpdateScreen(),
+                    ),
                   );
 
                   if (updatedUser != null) {

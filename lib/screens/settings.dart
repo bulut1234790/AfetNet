@@ -11,7 +11,6 @@ class SettingsScreen extends StatelessWidget {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: Color(0xFFF7F6E7),
       appBar: AppBar(
         title: const Text(
           "Ayarlar",

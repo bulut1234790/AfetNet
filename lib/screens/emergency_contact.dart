@@ -176,7 +176,7 @@ class EmergencyContactsScreenState extends State<EmergencyContactsScreen> {
         backgroundColor: Color(0xFF8D6E63),
         elevation: 5,
       ),
-      backgroundColor: Color(0xFFF7F6E7),
+
       body:
           contacts.isEmpty
               ? Center(

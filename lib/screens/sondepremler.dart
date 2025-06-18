@@ -21,7 +21,6 @@ class _DepremlerSayfasiState extends State<DepremlerSayfasi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF7F6E7),
       appBar: AppBar(
         title: Text(
           'Son Depremler',

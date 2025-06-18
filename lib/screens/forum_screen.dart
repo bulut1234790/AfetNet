@@ -225,7 +225,6 @@ class _ForumScreenState extends State<ForumScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF7F6E7),
       appBar: AppBar(
         title: const Text(
           "AfetNet Forum",
